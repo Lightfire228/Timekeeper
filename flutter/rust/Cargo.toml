@@ -7,7 +7,13 @@ edition = "2021"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
+chrono = "0.4.41"
+dotenvy = "0.15.7"
 flutter_rust_bridge = "=2.11.1"
+futures = "0.3.31"
+sea-orm = { version = "1.1.14", features = [ "sqlx-sqlite", "runtime-async-std-native-tls", "macros" ] }
+
+
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }

@@ -4,6 +4,7 @@ import 'package:timekeeper/src/rust/frb_generated.dart';
 
 Future<void> main() async {
   await RustLib.init();
+  await connectDb();
   runApp(const MyApp());
 }
 
