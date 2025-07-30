@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:timekeeper/src/rust/api/simple.dart';
-import 'package:timekeeper/src/rust/frb_generated.dart';
+import 'package:timekeeper/src/rust_lib/frb_api.dart';
+import 'package:timekeeper/src/rust_lib/frb_generated.dart';
 
 Future<void> main() async {
   await RustLib.init();
