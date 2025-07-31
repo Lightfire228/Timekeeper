@@ -1,6 +1,6 @@
 # timekeeper
 
-A new Flutter project.
+A todo app for my brain
 
 ## setup
 
@@ -17,4 +17,13 @@ then simply run with
 cd flutter/
 
 flutter run
+```
+
+### Environ
+
+- `rust/.env`
+- `flutter/.env`
+
+```sh
+DB_URL="/path/to/db/on/PC"
 ```
