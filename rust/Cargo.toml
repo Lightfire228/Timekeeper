@@ -17,3 +17,22 @@ sea-orm = { version = "1.1.14", features = [ "sqlx-sqlite", "runtime-async-std-n
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
+
+# https://github.com/fzyzcjy/flutter_rust_bridge/issues/1628#issuecomment-1880931863
+[target.armv7-linux-androideabi.dependencies]
+openssl = { version = "*", features = ["vendored"] }
+
+[target.aarch64-linux-android.dependencies]
+openssl = { version = "*", features = ["vendored"] }
+
+[target.i686-linux-android.dependencies]
+openssl = { version = "*", features = ["vendored"] }
+
+[target.x86_64-linux-android.dependencies]
+openssl = { version = "*", features = ["vendored"] }
+
+[target.aarch64-apple-ios-sim.dependencies]
+openssl = { version = "*", features = ["vendored"] }
+
+[target.x86_64-apple-ios.dependencies]
+openssl = { version = "*", features = ["vendored"] }
