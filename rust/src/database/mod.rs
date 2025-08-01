@@ -1,16 +1,22 @@
-
 use std::{env};
 
-use sea_orm::{Database, DbErr};
+use migration::{Migrator, MigratorTrait};
+use sea_orm::{Database, DatabaseConnection, DbErr};
 
 pub async fn connect_db(db_url: String) -> Result<(), DbErr> {
 
     let db_url = format!("sqlite://{db_url}?mode=rwc");
 
-    println!("rust db url: {}", db_url);
+    // println!("rust db url: {}", db_url);
     let db = Database::connect(db_url).await?;
 
+    migrate_all(&db).await?;
+
     Ok(())
+}
+
+pub async fn migrate_all(db: &DatabaseConnection) -> Result<(), DbErr> {
+    Migrator::up(db, None).await
 }
 
 pub fn db_url_pc() -> String {

@@ -3,8 +3,10 @@ name = "rust_lib_timekeeper"
 version = "0.1.0"
 edition = "2021"
 
+
 [lib]
 crate-type = ["cdylib", "staticlib"]
+
 
 [dependencies]
 chrono = "0.4.41"
@@ -13,10 +15,13 @@ flutter_rust_bridge = "=2.11.1"
 futures = "0.3.31"
 sea-orm = { version = "1.1.14", features = [ "sqlx-sqlite", "runtime-async-std-native-tls", "macros" ] }
 
+db_models = { path = "db_models" }
+migration = { path = "migration" }
 
 
 [lints.rust]
 unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
+
 
 # https://github.com/fzyzcjy/flutter_rust_bridge/issues/1628#issuecomment-1880931863
 [target.armv7-linux-androideabi.dependencies]
