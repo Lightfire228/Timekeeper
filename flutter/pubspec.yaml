@@ -21,6 +21,7 @@ dependencies:
   sqflite_common_ffi: ^2.3.6
   path: ^1.9.1
   flutter_dotenv: ^5.2.1
+  styled_widget: ^0.4.1
 
 dev_dependencies:
   flutter_test:

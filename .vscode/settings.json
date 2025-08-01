@@ -5,5 +5,12 @@
         "**/.hg": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
-    }
+    },
+
+    "todo-tree.filtering.excludeGlobs": [
+        "**/node_modules/*/**",
+        "**/frb_generated.rs",
+        "**/frb_generated.dart",
+        "**/frb_generated.*.dart",
+    ]
 }

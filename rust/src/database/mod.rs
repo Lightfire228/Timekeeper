@@ -3,7 +3,7 @@ use std::{env};
 use migration::{Migrator, MigratorTrait};
 use sea_orm::{Database, DatabaseConnection, DbErr};
 
-pub async fn connect_db(db_url: String) -> Result<(), DbErr> {
+pub async fn connect_db(db_url: String) -> Result<DatabaseConnection, DbErr> {
 
     let db_url = format!("sqlite://{db_url}?mode=rwc");
 
@@ -12,7 +12,7 @@ pub async fn connect_db(db_url: String) -> Result<(), DbErr> {
 
     migrate_all(&db).await?;
 
-    Ok(())
+    Ok(db)
 }
 
 pub async fn migrate_all(db: &DatabaseConnection) -> Result<(), DbErr> {

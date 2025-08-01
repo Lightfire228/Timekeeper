@@ -20,5 +20,7 @@ pub fn main() {
 
 async fn run() -> Result<(), DbErr> {
     let db_url = database::db_url_pc();
-    database::connect_db(db_url).await
+    database::connect_db(db_url).await?;
+
+    Ok(())
 }

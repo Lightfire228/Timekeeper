@@ -2,6 +2,7 @@ rust_input: crate::frb_api
 rust_root: rust/
 dart_output: flutter/lib/src/rust_lib
 
+# restart frb_codegen when modifying this
 rust_preamble: |
   // Set this in flutter_rust_bridge.yaml
-  use sea_orm::DbErr;
+  use sea_orm::{DbErr, DatabaseConnection};
