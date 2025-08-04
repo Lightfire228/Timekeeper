@@ -12,7 +12,6 @@ import 'package:styled_widget/styled_widget.dart';
 
 
 Future<void> main() async {
-  // await RustLib.init();
   await dotenv.load(fileName: '.env');
 
   runRustApp(body: body, state: RustState.new);
@@ -25,7 +24,7 @@ Widget body(RustState state) {
     SyncTextField(
       decoration:  InputDecoration(hintText: 'Input text and enter to add a todo'),
       text:        state.inputText,
-      onChanged:   (text) => state.inputText += text,
+      onChanged:   (text) => state.inputText = text,
       onSubmitted: (_)    => state.add(),
     ).padding(bottom: 8),
 
@@ -98,4 +97,59 @@ bool isMobile() {
 
 bool isDesktop() {
   return !isMobile();
+}
+
+// https://github.com/fzyzcjy/flutter_rust_bridge/issues/2823
+class SyncTextField extends StatefulWidget {
+  final String text;
+
+  // forward
+  final ValueChanged<String>? onChanged;
+  final InputDecoration? decoration;
+  final ValueChanged<String>? onSubmitted;
+
+  const SyncTextField({
+    super.key,
+    required this.text,
+    this.onChanged,
+    this.decoration,
+    this.onSubmitted,
+  });
+
+  @override
+  State<SyncTextField> createState() => _SyncTextFieldState();
+}
+
+class _SyncTextFieldState extends State<SyncTextField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    _controller.text = widget.text;
+  }
+
+  // @override
+  // void didUpdateWidget(covariant SyncTextField oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   if (oldWidget.text != widget.text) _controller.text = widget.text;
+  // }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: _controller,
+      // forward
+      onChanged: widget.onChanged,
+      decoration: widget.decoration,
+      onSubmitted: widget.onSubmitted,
+    );
+  }
 }
