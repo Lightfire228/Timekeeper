@@ -1,5 +1,6 @@
 pub mod frb_api;
 pub mod database;
+pub mod models;
 
 mod frb_generated;
 

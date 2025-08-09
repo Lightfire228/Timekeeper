@@ -1,4 +1,4 @@
-rust_input: crate::frb_api
+rust_input: crate::frb_api,crate::models
 rust_root: rust/
 dart_output: flutter/lib/src/rust_lib
 

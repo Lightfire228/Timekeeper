@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:timekeeper/src/rust_lib/frb_api.dart';
 import 'package:timekeeper/src/rust_lib/frb_api/state.dart';
+import 'package:timekeeper/src/rust_lib/models/task.dart';
 import 'package:timekeeper/src/rust_lib/frb_generated.dart';
 import 'package:path/path.dart';
 import 'dart:io';
@@ -47,19 +48,19 @@ Widget body(RustState state) {
   ;
 }
 
-Widget todoItem(RustState state, Item item) {
+Widget todoItem(RustState state, Task task) {
 
   return [
     Checkbox(
-      value:     item.completed,
-      onChanged: (_) => state.toggle(id: item.id)
+      value:     !task.isActive,
+      onChanged: (_) => state.toggle(id: task.id)
     ),
 
-    Text(item.content).expanded(),
+    Text(task.name).expanded(),
 
     IconButton(
         icon:      Icon(Icons.close, color: Colors.grey),
-        onPressed: () => state.remove(id: item.id)),
+        onPressed: () => state.remove(id: task.id)),
   ].toRow();
 }
 
@@ -99,21 +100,21 @@ bool isDesktop() {
   return !isMobile();
 }
 
-// https://github.com/fzyzcjy/flutter_rust_bridge/issues/2823
 class SyncTextField extends StatefulWidget {
+
   final String text;
 
   // forward
   final ValueChanged<String>? onChanged;
-  final InputDecoration? decoration;
+  final InputDecoration?      decoration;
   final ValueChanged<String>? onSubmitted;
 
   const SyncTextField({
     super.key,
     required this.text,
-    this.onChanged,
-    this.decoration,
-    this.onSubmitted,
+             this.onChanged,
+             this.decoration,
+             this.onSubmitted,
   });
 
   @override
@@ -121,34 +122,43 @@ class SyncTextField extends StatefulWidget {
 }
 
 class _SyncTextFieldState extends State<SyncTextField> {
+
   late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
+
     _controller = TextEditingController();
     _controller.text = widget.text;
   }
 
-  // @override
-  // void didUpdateWidget(covariant SyncTextField oldWidget) {
-  //   super.didUpdateWidget(oldWidget);
-  //   if (oldWidget.text != widget.text) _controller.text = widget.text;
-  // }
+  // https://github.com/fzyzcjy/flutter_rust_bridge/issues/2823
+  @override
+  void didUpdateWidget(covariant SyncTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (_controller.text != widget.text) {
+      _controller.text      = widget.text;
+      _controller.selection = TextSelection.collapsed(offset: -1);
+    }
+  }
 
   @override
   void dispose() {
+
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+
     return TextField(
-      controller: _controller,
+      controller:  _controller,
       // forward
-      onChanged: widget.onChanged,
-      decoration: widget.decoration,
+      onChanged:   widget.onChanged,
+      decoration:  widget.decoration,
       onSubmitted: widget.onSubmitted,
     );
   }

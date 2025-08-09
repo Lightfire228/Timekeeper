@@ -1,22 +1,17 @@
 use flutter_rust_bridge::frb;
 
+use crate::models::task::Task;
+
 
 #[frb(ui_state)]
 pub struct RustState {
     pub input_text: String,
     pub filter:     Filter,
 
-    items:          Vec<Item>,
-    next_id:        i32,
+    tasks:          Vec<Task>,
+    next_id:        usize,
 }
 
-
-#[derive(Clone)]
-pub struct Item {
-    pub id:        i32,
-    pub content:   String,
-    pub completed: bool,
-}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Filter {
@@ -33,27 +28,27 @@ impl RustState {
         let id        = self.next_id;
         self.next_id += 1;
 
-        self.items.push(Item {
-            id,
-            content:   self.input_text.clone(),
-            completed: false,
-        });
+        self.tasks.push(Task::new(
+            id, 
+            self.input_text.clone(), 
+            "".to_string(),
+        ));
 
         self.input_text.clear();
     }
 
-    pub fn remove(&mut self, id: i32) {
-        self.items.retain(|x| x.id != id);
+    pub fn remove(&mut self, id: usize) {
+        self.tasks.retain(|x| x.id != id);
     }
 
-    pub fn toggle(&mut self, id: i32) {
-        let entry = self.items
+    pub fn toggle(&mut self, id: usize) {
+        let entry = self.tasks
             .iter_mut()
             .find    (|x| x.id == id)
             .unwrap  ()
         ;
 
-        entry.completed = !entry.completed;
+        entry.is_active ^= true;
     }
 }
 
@@ -62,7 +57,7 @@ impl RustState {
     #[frb(sync)]
     pub fn new() -> Self {
         Self {
-            items:      vec![],
+            tasks:      vec![],
             input_text: "".to_string(),
             filter:     Filter::All,
             next_id:    0,
@@ -71,8 +66,8 @@ impl RustState {
     }
 
     #[frb(sync)]
-    pub fn filtered_items(&self) -> Vec<Item> {
-        self.items
+    pub fn filtered_items(&self) -> Vec<Task> {
+        self.tasks
             .iter   ()
             .filter (|x| self.filter.check(x))
             .cloned ()
@@ -82,12 +77,12 @@ impl RustState {
 
 impl Filter {
 
-    fn check(&self, item: &Item) -> bool {
+    fn check(&self, task: &Task) -> bool {
 
         match self {
             Self::All       => true,
-            Self::Active    => !item.completed,
-            Self::Completed =>  item.completed,
+            Self::Active    =>  task.is_active,
+            Self::Completed => !task.is_active,
         }
     }
 }
