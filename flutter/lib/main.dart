@@ -7,6 +7,8 @@ import 'package:timekeeper/src/rust_lib/models/task.dart';
 import 'package:timekeeper/src/rust_lib/frb_generated.dart';
 import 'package:path/path.dart';
 import 'dart:io';
+import 'package:english_words/english_words.dart';
+
 
 
 import 'package:styled_widget/styled_widget.dart';
@@ -20,6 +22,89 @@ Future<void> main() async {
 
 
 Widget body(RustState state) {
+  return MaterialApp(
+    title: 'Timekeeper',
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 71, 167, 212)),
+    ),
+    home: homePage(state),
+  );
+}
+
+
+Widget homePage(RustState state) {
+
+  IconData icon = state.isFavourited()? Icons.favorite : Icons.favorite_border;
+
+  return Scaffold(
+    body: Center(
+      child: [
+
+        Text('A random idea:'), 
+        BigCard(words: state.currentWord),
+        SizedBox(height: 10,),
+
+        [
+          ElevatedButton.icon(
+            onPressed: () {
+              state.toggleFavouriteWord();
+            },
+            icon:  Icon(icon),
+            label: Text('Like'),
+          ),
+
+          ElevatedButton(
+            onPressed: () {
+              getNextWord(state);
+            },
+            child: Text('Next'),
+          ),
+        ].toRow(
+          mainAxisSize: MainAxisSize.min
+        )
+        
+      ].toColumn(
+        mainAxisAlignment: MainAxisAlignment.center,
+      ),
+    )
+  );
+}
+
+void getNextWord(RustState state) {
+  final pair = WordPair.random();
+  state.setWord(wordPair: "${pair.first} ${pair.second}");
+}
+
+
+class BigCard extends StatelessWidget {
+  const BigCard({super.key, required this.words});
+
+  final String words;
+
+  @override
+  Widget build(BuildContext context) {
+
+    final theme = Theme.of(context);
+
+    final style = theme.textTheme.displayMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+
+    return Card(
+      color: theme.colorScheme.primary,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child:   Text(
+          words, 
+          style: style,
+          // semanticsLabel: "${pair.first} ${pair.second}",
+        ),
+      ),
+    );
+  }
+}
+
+Widget body_(RustState state) {
 
   return [
     SyncTextField(

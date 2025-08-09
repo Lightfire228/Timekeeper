@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use flutter_rust_bridge::frb;
 
 use crate::models::task::Task;
@@ -5,10 +7,12 @@ use crate::models::task::Task;
 
 #[frb(ui_state)]
 pub struct RustState {
-    pub input_text: String,
-    pub filter:     Filter,
+    pub input_text:    String,
+    pub filter:        Filter,
+    pub current_word:  String,
 
     tasks:          Vec<Task>,
+    words:          HashSet<String>,
     next_id:        usize,
 }
 
@@ -37,6 +41,20 @@ impl RustState {
         self.input_text.clear();
     }
 
+    pub fn set_word(&mut self, word_pair: String) {
+        self.current_word  = word_pair;
+    }
+
+    pub fn toggle_favourite_word(&mut self) {
+
+        if self.words.contains(&self.current_word) {
+            self.words.remove(&self.current_word);
+        }
+        else {
+            self.words.insert(self.current_word.clone());
+        }
+    }
+
     pub fn remove(&mut self, id: usize) {
         self.tasks.retain(|x| x.id != id);
     }
@@ -57,11 +75,13 @@ impl RustState {
     #[frb(sync)]
     pub fn new() -> Self {
         Self {
-            tasks:      vec![],
-            input_text: "".to_string(),
-            filter:     Filter::All,
-            next_id:    0,
-            base_state: Default::default(),
+            tasks:        vec![],
+            words:        HashSet::new(),
+            input_text:   "".to_string(),
+            current_word: "".to_string(),
+            filter:       Filter::All,
+            next_id:      0,
+            base_state:   Default::default(),
         }
     }
 
@@ -72,6 +92,11 @@ impl RustState {
             .filter (|x| self.filter.check(x))
             .cloned ()
             .collect()
+    }
+
+    #[frb(sync)]
+    pub fn is_favourited(&self) -> bool {
+        self.words.contains(&self.current_word)
     }
 }
 
