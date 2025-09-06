@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TK.Android", "TK.Android\TK.Android.csproj", "{ADEC5DB5-5FBB-4949-99B3-FF0B4B64BFCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.App", "Tk.App\Tk.App.csproj", "{ADEC5DB5-5FBB-4949-99B3-FF0B4B64BFCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Database", "Tk.Database\Tk.Database.csproj", "{DF3A7239-C3D9-4597-B5C5-257616C8CD94}"
 EndProject

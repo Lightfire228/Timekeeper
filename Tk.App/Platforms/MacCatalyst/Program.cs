@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace TK.Android;
+namespace Tk.App;
 
 public class Program
 {

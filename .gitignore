@@ -1,6 +1,6 @@
 **/*.env
 
-TK.Android/dotnet
+Tk.App/dotnet
 
 build_android.nu
 dotnet-install.sh

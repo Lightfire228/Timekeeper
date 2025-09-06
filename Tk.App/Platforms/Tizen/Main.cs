@@ -2,7 +2,7 @@ using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace TK.Android;
+namespace Tk.App;
 
 class Program : MauiApplication
 {

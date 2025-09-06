@@ -6,7 +6,7 @@ using SQLite;
 using Microsoft.Data.Sqlite;
 using A = Android;
 
-namespace TK.Android;
+namespace Tk.App;
 
 public static class MauiProgram {
 

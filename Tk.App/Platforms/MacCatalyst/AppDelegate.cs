@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace TK.Android;
+namespace Tk.App;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

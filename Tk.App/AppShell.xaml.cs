@@ -1,4 +1,4 @@
-﻿namespace TK.Android;
+﻿namespace Tk.App;
 
 public partial class AppShell : Shell
 {

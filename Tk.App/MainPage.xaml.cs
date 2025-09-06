@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tk.Database;
 
-namespace TK.Android;
+namespace Tk.App;
 
 public partial class MainPage : ContentPage {
     public MainPage(
