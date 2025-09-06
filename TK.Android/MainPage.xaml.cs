@@ -1,24 +1,39 @@
-﻿namespace TK.Android;
+﻿using Microsoft.EntityFrameworkCore;
+using Tk.Database;
 
-public partial class MainPage : ContentPage
-{
-	int count = 0;
+namespace TK.Android;
 
-	public MainPage()
-	{
-		InitializeComponent();
-	}
+public partial class MainPage : ContentPage {
+    public MainPage(
+        TkDbContext db
+    ) {
+        InitializeComponent();
+        CounterBtn.Text = "Initialize db";
+        ErrorLabel.Text = MauiProgram.Exception?.Message;
+        this.db = db;
+    }
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
+    TkDbContext db { get; set; }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+    private async void OnCounterClicked(object sender, EventArgs e) {
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+        CounterBtn.Text = "Initializing db";
+        
+        try {
+
+            await db.Database.MigrateAsync();
+
+            CounterBtn.Text = "Done";
+        }
+        catch (Exception ex) {
+            CounterBtn.Text = "Err";
+            ErrorLabel.Text = ex.Message;
+        }
+
+
+
+        SemanticScreenReader.Announce(CounterBtn.Text);
+    }
+
 }
 
