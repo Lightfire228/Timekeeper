@@ -1,9 +1,12 @@
-﻿namespace Tk.App;
+﻿using MauiIcons.Core;
+using MauiIcons.FontAwesome;
 
-public partial class AppShell : Shell
-{
-	public AppShell()
-	{
-		InitializeComponent();
-	}
+namespace Tk.App;
+
+public partial class AppShell : Shell {
+
+    public AppShell() {
+        
+        InitializeComponent();
+    }
 }

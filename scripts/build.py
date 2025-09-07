@@ -5,9 +5,9 @@ from . import CONFIG
 
 def main():
     
-    # build_android()
+    build_android()
     # new_migration('test')
-    remove_migration()
+    # remove_migration()
 
 def build_android():
 
@@ -25,7 +25,7 @@ def build_android():
 def new_migration(name: str):
 
     run([
-         CONFIG.dotnet, 'ef', 'migrations', 'add', name, 
+         CONFIG.dotnet, 'ef', 'migrations', 'add', name,
          
          '--startup-project', 'Tk.App.Linux',
          '--project',         'Tk.Database',

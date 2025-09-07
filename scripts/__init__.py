@@ -7,6 +7,7 @@ def bail(msg: str):
 
 try:
     from . import _usr_config
+    del _usr_config
 except ImportError:
     bail("'_usr_config.py' not found")
 
@@ -17,5 +18,4 @@ except ImportError:
 
 
 from ._usr_config import CONFIG
-from .config      import Config
 

@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="Tk.App.AppShell"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Tk.App"
-    Shell.FlyoutBehavior="Disabled"
-    Title="Tk.App">
+    x:Class     = "Tk.App.AppShell"
+    xmlns       = "http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x     = "http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:mi    = "clr-namespace:MauiIcons.Core;assembly=MauiIcons.Core"
+    xmlns:fs    = "clr-namespace:MauiIcons.FontAwesome.Solid;assembly=MauiIcons.FontAwesome.Solid"
+    xmlns:local = "clr-namespace:Tk.App"
+    xmlns:views = "clr-namespace:Tk.App.Pages"
+    Title       = "Tk.App"
+>
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <FlyoutItem
+        Title = "Home"
+        Icon  = "{fs:FontAwesomeSolid Icon=House}"
+    >
+        <Tab>
+            <ShellContent
+                Title           = "Home"
+                ContentTemplate = "{DataTemplate local:MainPage}"
+                Route           = "MainPage"
+            />
+        </Tab>
+    </FlyoutItem>
+
+    <FlyoutItem
+        Title = "Tasks"
+        Icon  = "{fs:FontAwesomeSolid Icon=ListCheck}"
+    >
+        <Tab>
+            <ShellContent
+                ContentTemplate = "{DataTemplate views:TaskList.TaskListView}"
+            >
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+
 
 </Shell>
