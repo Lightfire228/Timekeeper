@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using SQLite;
 using Microsoft.Data.Sqlite;
 using A = Android;
+using MauiIcons.FontAwesome.Solid;
+using MauiIcons.FontAwesome;
 
 namespace Tk.App;
 
 public static class MauiProgram {
 
+    // TODO: use a proper logger
     public static Exception? Exception { get; private set; }
 
     public static MauiApp CreateMauiApp() {
@@ -36,6 +39,11 @@ public static class MauiProgram {
                 // Exception = new(dbFile);
             }
         });
+
+
+        // Initialise the .Net Maui Icons - FontAwesome Solid
+        builder.UseMauiApp<App>().UseFontAwesomeSolidMauiIcons();
+        builder.UseMauiApp<App>().UseFontAwesomeMauiIcons();
 
         builder.Logging.AddDebug();
 

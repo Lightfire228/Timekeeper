@@ -3,8 +3,7 @@
     x:Class     = "Tk.App.AppShell"
     xmlns       = "http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x     = "http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:mi    = "clr-namespace:MauiIcons.Core;assembly=MauiIcons.Core"
-    xmlns:fs    = "clr-namespace:MauiIcons.FontAwesome.Solid;assembly=MauiIcons.FontAwesome.Solid"
+    xmlns:mi    = "http://www.aathifmahir.com/dotnet/2022/maui/icons"
     xmlns:local = "clr-namespace:Tk.App"
     xmlns:views = "clr-namespace:Tk.App.Pages"
     Title       = "Tk.App"
@@ -12,7 +11,7 @@
 
     <FlyoutItem
         Title = "Home"
-        Icon  = "{fs:FontAwesomeSolid Icon=House}"
+        Icon  = "{mi:FontAwesomeSolid Icon=House}"
     >
         <Tab>
             <ShellContent
@@ -25,7 +24,7 @@
 
     <FlyoutItem
         Title = "Tasks"
-        Icon  = "{fs:FontAwesomeSolid Icon=ListCheck}"
+        Icon  = "{mi:FontAwesomeSolid Icon=ListCheck}"
     >
         <Tab>
             <ShellContent

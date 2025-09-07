@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MauiIcons.Core;
+using MauiIcons.FontAwesome.Solid;
+using Microsoft.EntityFrameworkCore;
 using Tk.Database;
 
 namespace Tk.App;
