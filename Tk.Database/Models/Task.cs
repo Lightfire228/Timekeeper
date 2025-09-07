@@ -1,1 +1,0 @@
-namespace Tk.Database.Models;

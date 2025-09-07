@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tk.Database;
 
@@ -10,9 +11,11 @@ using Tk.Database;
 namespace Tk.Database.Migrations
 {
     [DbContext(typeof(TkDbContext))]
-    partial class TkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250907004933_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
@@ -33,7 +36,7 @@ namespace Tk.Database.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("CompletionEvents", (string)null);
+                    b.ToTable("CompletionEvents");
                 });
 
             modelBuilder.Entity("Tk.Database.Models.TaskModel", b =>
@@ -61,7 +64,7 @@ namespace Tk.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
             modelBuilder.Entity("Tk.Database.Models.CompletionEvent", b =>

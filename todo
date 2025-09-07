@@ -1,4 +1,0 @@
-- [ ] rename TK.Android to Tk.MAUI
-  - [ ] fix the namespaces to the same capitalization
-- [ ] add the build script for android
-  - move the app id to `.env`

@@ -1,9 +1,7 @@
 **/*.env
 
-Tk.App/dotnet
-
-build_android.nu
-dotnet-install.sh
+*.nu
+*.db
 
 
 ## Ignore Visual Studio temporary files, build results, and
