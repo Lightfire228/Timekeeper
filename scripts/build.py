@@ -8,6 +8,7 @@ def main():
     build_android()
     # new_migration('test')
     # remove_migration()
+    # add_dependency('Microsoft.Extensions.Logging.Console')
 
 def build_android():
 
@@ -39,6 +40,13 @@ def remove_migration():
          '--startup-project', 'Tk.App.Linux',
          '--project',         'Tk.Database',
     ])
+
+def add_dependency(dep: str):
+    run([
+         CONFIG.dotnet, 'add', 'package', dep,
+         '--project', 'Tk.App',
+    ])
+
 
 def run(cmds: list[str | Path], allow_error = False) -> CompletedProcess[bytes]:
     cmds = [str(x) for x in cmds]

@@ -16,7 +16,7 @@
         <Tab>
             <ShellContent
                 Title           = "Home"
-                ContentTemplate = "{DataTemplate local:MainPage}"
+                ContentTemplate = "{DataTemplate views:MainPage.MainPage}"
                 Route           = "MainPage"
             />
         </Tab>
