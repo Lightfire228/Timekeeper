@@ -30,7 +30,6 @@ public partial class MainPage : ContentPage {
         CounterBtn.Text = "Initializing db";
         
         try {
-
             await db.Database.MigrateAsync();
 
             CounterBtn.Text = "Done";

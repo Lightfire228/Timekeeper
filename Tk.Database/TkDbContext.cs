@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using Tk.Database.Models;
+using Tk.Models.Database;
 
 namespace Tk.Database;
 

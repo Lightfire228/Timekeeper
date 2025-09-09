@@ -6,7 +6,8 @@ from . import CONFIG
 def main():
     
     build_android()
-    # new_migration('test')
+    # build_linux()
+    # new_migration('Init')
     # remove_migration()
     # add_dependency('Microsoft.Extensions.Logging.Console')
 
@@ -21,6 +22,12 @@ def build_android():
          '-f:net9.0-android',
          '-t:InstallAndroidDependencies',
          '-p:AcceptAndroidSDKLicenses=True',
+    ])
+
+def build_linux():
+
+    run([
+         CONFIG.dotnet, 'run', '--project', 'Tk.App.Linux'
     ])
 
 def new_migration(name: str):
@@ -48,10 +55,10 @@ def add_dependency(dep: str):
     ])
 
 
-def run(cmds: list[str | Path], allow_error = False) -> CompletedProcess[bytes]:
+def run(cmds: list[str | Path], allow_error = False, cwd: str = None) -> CompletedProcess[bytes]:
     cmds = [str(x) for x in cmds]
 
-    p = s_run(cmds)
+    p = s_run(cmds, cwd=cwd)
 
     if not allow_error:
         p.check_returncode()

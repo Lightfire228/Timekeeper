@@ -17,7 +17,7 @@ namespace Tk.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
 
-            modelBuilder.Entity("Tk.Database.Models.CompletionEvent", b =>
+            modelBuilder.Entity("Tk.Models.Database.CompletionEvent", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,10 +33,10 @@ namespace Tk.Database.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("CompletionEvents", (string)null);
+                    b.ToTable("CompletionEvents");
                 });
 
-            modelBuilder.Entity("Tk.Database.Models.TaskModel", b =>
+            modelBuilder.Entity("Tk.Models.Database.TaskModel", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,12 +61,12 @@ namespace Tk.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tasks", (string)null);
+                    b.ToTable("Tasks");
                 });
 
-            modelBuilder.Entity("Tk.Database.Models.CompletionEvent", b =>
+            modelBuilder.Entity("Tk.Models.Database.CompletionEvent", b =>
                 {
-                    b.HasOne("Tk.Database.Models.TaskModel", "Task")
+                    b.HasOne("Tk.Models.Database.TaskModel", "Task")
                         .WithMany("CompletionEvents")
                         .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -75,7 +75,7 @@ namespace Tk.Database.Migrations
                     b.Navigation("Task");
                 });
 
-            modelBuilder.Entity("Tk.Database.Models.TaskModel", b =>
+            modelBuilder.Entity("Tk.Models.Database.TaskModel", b =>
                 {
                     b.Navigation("CompletionEvents");
                 });

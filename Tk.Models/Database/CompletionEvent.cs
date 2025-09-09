@@ -1,4 +1,4 @@
-namespace Tk.Database.Models;
+namespace Tk.Models.Database;
 
 public class CompletionEvent {
     public long      Id          { get; set; }

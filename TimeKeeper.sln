@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Database", "Tk.Database\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.App.Linux", "Tk.App.Linux\Tk.App.Linux.csproj", "{A92F2E9A-520D-4741-9983-01BCD832F467}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Models", "Tk.Models\Tk.Models.csproj", "{F5AD4AAC-FFFD-4FC8-A45F-ECA920FD5288}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{A92F2E9A-520D-4741-9983-01BCD832F467}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A92F2E9A-520D-4741-9983-01BCD832F467}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A92F2E9A-520D-4741-9983-01BCD832F467}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5AD4AAC-FFFD-4FC8-A45F-ECA920FD5288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5AD4AAC-FFFD-4FC8-A45F-ECA920FD5288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5AD4AAC-FFFD-4FC8-A45F-ECA920FD5288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5AD4AAC-FFFD-4FC8-A45F-ECA920FD5288}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

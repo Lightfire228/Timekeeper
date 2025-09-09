@@ -1,4 +1,4 @@
-namespace Tk.Database.Models;
+namespace Tk.Models.Database;
 
 public class TaskModel {
     public          long         Id          { get; set; }
@@ -15,7 +15,7 @@ public class TaskModel {
 public enum TaskPriority {
     None,
     Low,
-    Medim,
+    Medium,
     High,
     FUCK
 }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tk.Database\Tk.Database.csproj" />
+    <ProjectReference Include="..\Tk.Models\Tk.Models.csproj" />
   </ItemGroup>
 
 </Project>

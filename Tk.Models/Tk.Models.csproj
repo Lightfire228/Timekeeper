@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Condition=" $(Platform) == android">
+    <TargetFrameworks>net9.0;net9.0-android;</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" $(Platform) != android">
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+
+</Project>
