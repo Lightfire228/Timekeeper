@@ -16,19 +16,14 @@ def build_android():
     run([
          CONFIG.dotnet, 'build', 'Tk.App', '-t:Run',
 
+         '-f:net9.0-android',
         f'-p:DeviceName={CONFIG.device_id}',
         f'-p:AndroidSdkDirectory={CONFIG.android_sdk}',
         f'-p:JavaSdkDirectory={CONFIG.jdk}',
-         '-f:net9.0-android',
          '-t:InstallAndroidDependencies',
          '-p:AcceptAndroidSDKLicenses=True',
     ])
 
-def build_linux():
-
-    run([
-         CONFIG.dotnet, 'run', '--project', 'Tk.App.Linux'
-    ])
 
 def new_migration(name: str):
 
@@ -46,12 +41,6 @@ def remove_migration():
          
          '--startup-project', 'Tk.App.Linux',
          '--project',         'Tk.Database',
-    ])
-
-def add_dependency(dep: str):
-    run([
-         CONFIG.dotnet, 'add', 'package', dep,
-         '--project', 'Tk.App',
     ])
 
 

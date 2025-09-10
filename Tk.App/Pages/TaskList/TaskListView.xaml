@@ -1,24 +1,42 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Tk.App.Pages.TaskList.TaskListView">
+<ContentPage 
+    xmlns        = "http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x      = "http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models = "clr-namespace:Tk.Models.Database;assembly=Tk.Models"
+    x:Class      = "Tk.App.Pages.TaskList.TaskListView"
+>
+    <Grid RowDefinitions="*, Auto">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="30,0"
-            Spacing="25">
-            <Image
-                Source="dotnet_bot.png"
-                HeightRequest="185"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot in a race car number eight" />
+        <CollectionView
+            VerticalOptions  = "Fill"
+            ItemsSource      = "{Binding}"
+            SelectionMode    = "Single"
+        >
+            <!-- SelectionChanged = "CollectionView_SelectionChanged" -->
 
-            <Label
-                Text="Task List"
-                Style="{StaticResource Headline}"
-                SemanticProperties.HeadingLevel="Level1" />
 
-        </VerticalStackLayout>
-    </ScrollView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TaskModel">
+    
+                    <Grid
+                        ColumnDefinitions = "*, Auto"
+                        Padding           = "20"
+                    >
+                        <Label Text="{Binding Name}"        FontSize="22"/>
+                        <Label Text="{Binding Description}" FontSize="14" Grid.Column="1"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        
+        </CollectionView>
+
+        <Button 
+            Grid.Row = "1"
+            Text     = "Add new Task"
+            Margin   = "20"
+        />
+            
+            <!-- Clicked  = "OnItemAdded" -->
+    </Grid>
 
 </ContentPage>

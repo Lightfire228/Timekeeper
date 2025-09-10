@@ -4,8 +4,9 @@ using MauiIcons.Core;
 using MauiIcons.FontAwesome.Solid;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Controls;
 using Tk.Database;
-
+using Tk.Models;
 using Logger = Microsoft.Extensions.Logging.ILogger<MainPage>;
 
 public partial class MainPage : ContentPage {
@@ -31,6 +32,9 @@ public partial class MainPage : ContentPage {
         
         try {
             await db.Database.MigrateAsync();
+
+            await db.Tasks.AddRangeAsync(TestData.Tasks);
+            await db.SaveChangesAsync();
 
             CounterBtn.Text = "Done";
         }

@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net9.0-android;</TargetFrameworks>
+		<TargetFramework>net9.0-android</TargetFramework>
 
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Tk.App</RootNamespace>
@@ -58,6 +59,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Tk.Database\Tk.Database.csproj" />
+	  <ProjectReference Include="..\Tk.Models\Tk.Models.csproj" />
 	</ItemGroup>
 
 </Project>
