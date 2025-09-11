@@ -19,3 +19,11 @@ public enum TaskPriority {
     High,
     FUCK
 }
+
+
+public static class TaskExtensions {
+    
+    public static string DueDateDisplay(this TaskModel task) => 
+        task.Due?.ToString("yyyy-MM-mm") ?? ""
+    ;
+}

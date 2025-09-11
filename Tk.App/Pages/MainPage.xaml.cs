@@ -1,4 +1,4 @@
-﻿namespace Tk.App.Pages.MainPage;
+﻿namespace Tk.App.Pages;
 
 using MauiIcons.Core;
 using MauiIcons.FontAwesome.Solid;

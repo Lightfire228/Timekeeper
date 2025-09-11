@@ -16,7 +16,7 @@
         <Tab>
             <ShellContent
                 Title           = "Home"
-                ContentTemplate = "{DataTemplate views:MainPage.MainPage}"
+                ContentTemplate = "{DataTemplate views:MainPage}"
                 Route           = "MainPage"
             />
         </Tab>
@@ -28,7 +28,7 @@
     >
         <Tab>
             <ShellContent
-                ContentTemplate = "{DataTemplate views:TaskList.TaskListView}"
+                ContentTemplate = "{DataTemplate views:TaskListView}"
             >
             </ShellContent>
         </Tab>

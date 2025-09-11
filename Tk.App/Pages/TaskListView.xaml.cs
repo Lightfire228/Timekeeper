@@ -1,10 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
+using Tk.App.ViewModels;
 using Tk.Database;
 using Tk.Models;
 using Tk.Models.Database;
 
-namespace Tk.App.Pages.TaskList;
+namespace Tk.App.Pages;
 
 public partial class TaskListView : ContentPage {
 
@@ -20,18 +21,24 @@ public partial class TaskListView : ContentPage {
     TkDbContext db { get; set; }
 
 
-    public ObservableCollection<TaskModel> Tasks { get; set; } = [];
+    public ObservableCollection<TaskListViewModel> Tasks { get; set; } = [];
 
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs e) {
         base.OnNavigatedTo(e);
 
-        var tasks = await db.Tasks.AsQueryable().ToListAsync();
+        await Task.CompletedTask;
+        // var tasks = await db.Tasks.AsQueryable().ToListAsync();
+        var tasks = TestData.Tasks;
 
         MainThread.BeginInvokeOnMainThread(() => {
             Tasks.Clear();
             foreach (var t in tasks) {
-                Tasks.Add(t);
+                Tasks.Add(new () {
+                    Name     = t.Name,
+                    DueDate  = t.DueDateDisplay(),
+                    Complete = t.CompletionEvents.Any()
+                });
             }
         });
 
@@ -39,7 +46,7 @@ public partial class TaskListView : ContentPage {
     }
 
     private async void TasksSelectionChanged(object sender, SelectionChangedEventArgs e) {
-        
+        await Task.CompletedTask;
     }
 
 }

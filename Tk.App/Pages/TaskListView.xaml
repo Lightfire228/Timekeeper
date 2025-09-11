@@ -2,8 +2,8 @@
 <ContentPage 
     xmlns        = "http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x      = "http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models = "clr-namespace:Tk.Models.Database;assembly=Tk.Models"
-    x:Class      = "Tk.App.Pages.TaskList.TaskListView"
+    xmlns:models = "clr-namespace:Tk.App.ViewModels"
+    x:Class      = "Tk.App.Pages.TaskListView"
 >
     <Grid RowDefinitions="*, Auto">
 
@@ -16,14 +16,15 @@
 
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:TaskModel">
+                <DataTemplate x:DataType="models:TaskListViewModel">
     
                     <Grid
-                        ColumnDefinitions = "*, Auto"
+                        ColumnDefinitions = "*, Auto, 20"
                         Padding           = "20"
                     >
-                        <Label Text="{Binding Name}"        FontSize="22"/>
-                        <Label Text="{Binding Description}" FontSize="14" Grid.Column="1"/>
+                        <Label Text="{Binding Name}"    FontSize="14" Grid.Column="0"/>
+                        <Label Text="{Binding DueDate}" FontSize="11" Grid.Column="1" HorizontalTextAlignment="End"/>
+                        <Label Text="✔️"                FontSize="11" Grid.Column="2" HorizontalTextAlignment="End" IsVisible="{Binding Complete}"/>
                     </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
