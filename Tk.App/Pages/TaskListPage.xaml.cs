@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Tk.App.ViewModels;
 using Tk.Database;
 using Tk.Models;
@@ -7,18 +8,25 @@ using Tk.Models.Database;
 
 namespace Tk.App.Pages;
 
-public partial class TaskListView : ContentPage {
+using Logger = Microsoft.Extensions.Logging.ILogger<TaskListPage>;
 
-    public TaskListView(
-        TkDbContext db
+public partial class TaskListPage : ContentPage {
+
+    public TaskListPage(
+        TkDbContext db,
+        Logger      logger
+
     ) {
         InitializeComponent();
-        this.db = db;
+        this.db     = db;
+        this.logger = logger;
 
         BindingContext = Tasks;
+        
     }
 
-    TkDbContext db { get; set; }
+    TkDbContext db     { get; set; }
+    Logger      logger { get; set; }
 
 
     public ObservableCollection<TaskListViewModel> Tasks { get; set; } = [];
@@ -27,9 +35,7 @@ public partial class TaskListView : ContentPage {
     protected override async void OnNavigatedTo(NavigatedToEventArgs e) {
         base.OnNavigatedTo(e);
 
-        await Task.CompletedTask;
-        // var tasks = await db.Tasks.AsQueryable().ToListAsync();
-        var tasks = TestData.Tasks;
+        var tasks = await db.Tasks.AsQueryable().ToListAsync();
 
         MainThread.BeginInvokeOnMainThread(() => {
             Tasks.Clear();
@@ -42,11 +48,28 @@ public partial class TaskListView : ContentPage {
             }
         });
 
-    
     }
+
+    private async void NewTask(object sender, EventArgs e) {
+
+        await Shell.Current.GoToAsync($"NewItemPageasdf", true);
+
+        // try {
+        //     await Shell.Current.GoToAsync($"NewItemPage", true);
+        // }
+        // catch (Exception ex) {
+        //     Log(ex);
+        //     throw;
+        // }
+    }
+
 
     private async void TasksSelectionChanged(object sender, SelectionChangedEventArgs e) {
         await Task.CompletedTask;
+    }
+
+    private void Log(Exception ex) {
+        logger.LogError("{ex}", ex);
     }
 
 }

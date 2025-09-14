@@ -15,10 +15,8 @@ public partial class MainPage : ContentPage {
         Logger      logger
     ) {
         InitializeComponent();
-        CounterBtn.Text = "Initialize db";
-        ErrorLabel.Text = MauiProgram.Exception?.Message;
-        this.db     = db;
-        this.logger = logger;
+        this.db         = db;
+        this.logger     = logger;
 
         logger.LogInformation("test");
     }
@@ -27,23 +25,6 @@ public partial class MainPage : ContentPage {
     private Logger      logger { get; set; }
 
     private async void OnCounterClicked(object sender, EventArgs e) {
-
-        CounterBtn.Text = "Initializing db";
-        
-        try {
-            await db.Database.MigrateAsync();
-
-            await db.Tasks.AddRangeAsync(TestData.Tasks);
-            await db.SaveChangesAsync();
-
-            CounterBtn.Text = "Done";
-        }
-        catch (Exception ex) {
-            CounterBtn.Text = "Err";
-            ErrorLabel.Text = ex.Message;
-        }
-
-
 
         SemanticScreenReader.Announce(CounterBtn.Text);
     }

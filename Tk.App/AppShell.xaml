@@ -10,6 +10,19 @@
 >
 
     <FlyoutItem
+        Title = "Tasks"
+        Icon  = "{mi:FontAwesomeSolid Icon=ListCheck}"
+    >
+        <Tab>
+            <ShellContent
+                ContentTemplate = "{DataTemplate views:TaskListPage}"
+            >
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+
+
+    <FlyoutItem
         Title = "Home"
         Icon  = "{mi:FontAwesomeSolid Icon=House}"
     >
@@ -19,18 +32,6 @@
                 ContentTemplate = "{DataTemplate views:MainPage}"
                 Route           = "MainPage"
             />
-        </Tab>
-    </FlyoutItem>
-
-    <FlyoutItem
-        Title = "Tasks"
-        Icon  = "{mi:FontAwesomeSolid Icon=ListCheck}"
-    >
-        <Tab>
-            <ShellContent
-                ContentTemplate = "{DataTemplate views:TaskListView}"
-            >
-            </ShellContent>
         </Tab>
     </FlyoutItem>
 

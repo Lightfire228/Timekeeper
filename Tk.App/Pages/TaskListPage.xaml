@@ -3,7 +3,7 @@
     xmlns        = "http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x      = "http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models = "clr-namespace:Tk.App.ViewModels"
-    x:Class      = "Tk.App.Pages.TaskListView"
+    x:Class      = "Tk.App.Pages.TaskListPage"
 >
     <Grid RowDefinitions="*, Auto">
 
@@ -35,9 +35,9 @@
             Grid.Row = "1"
             Text     = "Add new Task"
             Margin   = "20"
+            Clicked  = "NewTask"
         />
             
-            <!-- Clicked  = "OnItemAdded" -->
     </Grid>
 
 </ContentPage>
