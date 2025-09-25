@@ -51,16 +51,7 @@ public partial class TaskListPage : ContentPage {
     }
 
     private async void NewTask(object sender, EventArgs e) {
-
-        await Shell.Current.GoToAsync($"NewItemPageasdf", true);
-
-        // try {
-        //     await Shell.Current.GoToAsync($"NewItemPage", true);
-        // }
-        // catch (Exception ex) {
-        //     Log(ex);
-        //     throw;
-        // }
+        await Shell.Current.GoToAsync($"NewItemPage", true);
     }
 
 

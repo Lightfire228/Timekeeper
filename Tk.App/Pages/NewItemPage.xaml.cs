@@ -16,11 +16,10 @@ public partial class NewItemPage
         InitializeComponent();
         Db = db;
 
-        logger.LogInformation("Made it here");
-        // Item = new() {
-        //     Name        = "",
-        //     Description = "",
-        // };
+        Item = new() {
+            Name        = "",
+            Description = "",
+        };
     }
 
     TkDbContext Db { get; set; }
@@ -48,7 +47,7 @@ public partial class NewItemPage
 
         });
         await Db.SaveChangesAsync();
-        await Shell.Current.GoToAsync("..");
+        await Shell.Current.GoToAsync(".."); 
     }
 
     // async void OnDeleteClicked(object sender, EventArgs e) {

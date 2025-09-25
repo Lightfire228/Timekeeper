@@ -34,7 +34,7 @@ def build_android():
 
          '-f:net9.0-android',
         #  '--configuration', 'Release',
-        f'-p:DeviceName={CONFIG.device_id}',
+        f'-p:DeviceName={CONFIG.device_id_develop}',
         f'-p:AndroidSdkDirectory={CONFIG.android_sdk}',
         f'-p:JavaSdkDirectory={CONFIG.jdk}',
          '-t:InstallAndroidDependencies',
