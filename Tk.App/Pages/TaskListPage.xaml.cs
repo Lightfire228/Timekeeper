@@ -5,6 +5,7 @@ using Tk.App.ViewModels;
 using Tk.Database;
 using Tk.Models;
 using Tk.Models.Database;
+using Tk.Api;
 
 namespace Tk.App.Pages;
 
@@ -52,6 +53,12 @@ public partial class TaskListPage : ContentPage {
 
     private async void NewTask(object sender, EventArgs e) {
         await Shell.Current.GoToAsync($"NewItemPage", true);
+    }
+
+    private async void Notification(object sender, EventArgs e) {
+        await Task.CompletedTask;
+
+        Notifications.TestNotification();
     }
 
 

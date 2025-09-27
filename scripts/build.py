@@ -10,24 +10,43 @@ MOST = shutil.which('most')
 def main():
     
     while True:
-        print('Menu:')
-        print('  1 - build android (default)')
-        print('  2 - cat log')
-        print('  3 - new migration')
-        print('  4 - remove migration')
 
-        usr_in = input('> ').strip()
-        usr_in = usr_in or '1'
+        try:
+            menu()
 
-        match usr_in:
-            case '1': build_android()
-            case '2': cat_log()
-            case '3': new_migration('')
-            case '4': remove_migration()
+        except (KeyboardInterrupt):
+            raise
+        
+        except:
+            ...
 
-        print()
+
+
+def menu():
+    print('Menu:')
+    print('  1 - build android (default)')
+    print('  2 - cat log')
+    print('  3 - new migration')
+    print('  4 - remove migration')
+    print('  5 - clean build')
+
+    usr_in = input('> ').strip()
+    usr_in = usr_in or '1'
+
+    match usr_in:
+        case '1': build_android()
+        case '2': cat_log()
+        case '3': new_migration('')
+        case '4': remove_migration()
+        case '5': clean_build()
+
+    print()
+
 
 def build_android():
+
+    # clean_build()
+    # run([CONFIG.dotnet, 'clean'])
 
     run([
          CONFIG.dotnet, 'build', 'Tk.App', '-t:Run',
@@ -68,6 +87,17 @@ def cat_log():
     ], capture_out=True)
 
     run([MOST, '+100000'], input=p.stdout)
+
+
+def clean_build():
+
+    globs = [
+        *Path('./').glob('**/obj/'),
+        *Path('./').glob('**/bin/'),
+    ]
+
+    for f in globs:
+        shutil.rmtree(f)
 
 
 def run(
