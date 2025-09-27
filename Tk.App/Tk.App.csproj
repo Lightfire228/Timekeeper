@@ -11,17 +11,27 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
-        <!-- Display name -->
-        <ApplicationTitle>Tk.App</ApplicationTitle>
-
-        <!-- App Identifier -->
-        <ApplicationId>com.companyname.Tk.App</ApplicationId>
-
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <ApplicationVersion>1</ApplicationVersion>
 
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' != 'DEBUG'">
+        <!-- Display name -->
+        <ApplicationTitle>Tk.App</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>com.companyname.Tk.App</ApplicationId>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)' == 'DEBUG'">
+        <!-- Display name -->
+        <ApplicationTitle>Tk.App.Develop</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>com.companyname.Tk.App.Develop</ApplicationId>
     </PropertyGroup>
 
     <ItemGroup>

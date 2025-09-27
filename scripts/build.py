@@ -9,10 +9,12 @@ MOST = shutil.which('most')
 
 def main():
     
-    while True:
+    done = False
+
+    while not done:
 
         try:
-            menu()
+            done = menu()
 
         except (KeyboardInterrupt):
             raise
@@ -21,43 +23,60 @@ def main():
             ...
 
 
+def menu() -> bool:
 
-def menu():
+    opts = {
+        '1': ('build android (default)', build_android),
+        '2': ('cat log',                 cat_log),
+        '3': ('new migration',           new_migration),
+        '4': ('remove migration',        remove_migration),
+        '5': ('clean build',             clean_build),
+        '6': ('build android release',   build_android_release),
+        'q': ('quit',                    lambda: ...),
+    }
+
     print('Menu:')
-    print('  1 - build android (default)')
-    print('  2 - cat log')
-    print('  3 - new migration')
-    print('  4 - remove migration')
-    print('  5 - clean build')
+    for key in opts:
+        display = opts[key][0]
+        print(f'  {key} - {display}')
 
     usr_in = input('> ').strip()
     usr_in = usr_in or '1'
 
-    match usr_in:
-        case '1': build_android()
-        case '2': cat_log()
-        case '3': new_migration('')
-        case '4': remove_migration()
-        case '5': clean_build()
+    if usr_in == 'q':
+        return True
+
+    opts.get(usr_in, lambda: ...)[1]()
 
     print()
+    return False
 
+def build_android_release():
+    build_android(release=True)
 
-def build_android():
+def build_android(release=False):
 
-    # clean_build()
-    # run([CONFIG.dotnet, 'clean'])
+    args = []
+
+    if release:
+        if not confirm():
+            return
+        
+        args = [
+            *args,
+            '--configuration', 'Release',
+        ]
 
     run([
          CONFIG.dotnet, 'build', 'Tk.App', '-t:Run',
 
          '-f:net9.0-android',
-        #  '--configuration', 'Release',
         f'-p:DeviceName={CONFIG.device_id_develop}',
         f'-p:AndroidSdkDirectory={CONFIG.android_sdk}',
         f'-p:JavaSdkDirectory={CONFIG.jdk}',
          '-t:InstallAndroidDependencies',
          '-p:AcceptAndroidSDKLicenses=True',
+        *args
     ])
 
 
@@ -83,7 +102,7 @@ def cat_log():
 
     p = run([
         ADB, 'shell',
-        'su -c "cat /data/data/com.companyname.Tk.App/files/log.log"'
+        'su -c "cat /data/data/com.companyname.Tk.App.Develop/files/log.log"'
     ], capture_out=True)
 
     run([MOST, '+100000'], input=p.stdout)
@@ -99,6 +118,11 @@ def clean_build():
     for f in globs:
         shutil.rmtree(f)
 
+
+def confirm() -> bool:
+    x = input('>> Are you sure? (y/N)\n> ')
+
+    return x.lower().startswith('y')
 
 def run(
         cmds: list[str | Path],
