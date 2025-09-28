@@ -16,7 +16,7 @@ def main():
         try:
             done = menu()
 
-        except (KeyboardInterrupt):
+        except (KeyboardInterrupt | NameError):
             raise
         
         except:
@@ -25,19 +25,27 @@ def main():
 
 def menu() -> bool:
 
+    def no_op():
+        ...
+
+    class Op():
+        def __init__(self, name: str, func: callable):
+            self.name = name
+            self.func = func
+
     opts = {
-        '1': ('build android (default)', build_android),
-        '2': ('cat log',                 cat_log),
-        '3': ('new migration',           new_migration),
-        '4': ('remove migration',        remove_migration),
-        '5': ('clean build',             clean_build),
-        '6': ('build android release',   build_android_release),
-        'q': ('quit',                    lambda: ...),
+        '1': Op('build android (default)', build_android),
+        '2': Op('cat log',                 cat_log),
+        '3': Op('',                        no_op),
+        '4': Op('',                        no_op),
+        '5': Op('clean build',             clean_build),
+        '6': Op('build android release',   build_android_release),
+        'q': Op('quit',                    no_op),
     }
 
     print('Menu:')
     for key in opts:
-        display = opts[key][0]
+        display = opts[key].name
         print(f'  {key} - {display}')
 
     usr_in = input('> ').strip()
@@ -45,8 +53,9 @@ def menu() -> bool:
 
     if usr_in == 'q':
         return True
-
-    opts.get(usr_in, lambda: ...)[1]()
+    
+    op = opts.get(usr_in, Op('', no_op))
+    op.func()
 
     print()
     return False
@@ -77,25 +86,6 @@ def build_android(release=False):
          '-t:InstallAndroidDependencies',
          '-p:AcceptAndroidSDKLicenses=True',
         *args
-    ])
-
-
-def new_migration(name: str):
-
-    run([
-         CONFIG.dotnet, 'ef', 'migrations', 'add', name,
-         
-         '--startup-project', 'Tk.App.Linux',
-         '--project',         'Tk.Database',
-    ])
-
-def remove_migration():
-
-    run([
-         CONFIG.dotnet, 'ef', 'migrations', 'remove',
-         
-         '--startup-project', 'Tk.App.Linux',
-         '--project',         'Tk.Database',
     ])
 
 def cat_log():
