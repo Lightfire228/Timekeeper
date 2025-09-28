@@ -58,7 +58,9 @@ public partial class TaskListPage : ContentPage {
     private async void Notification(object sender, EventArgs e) {
         await Task.CompletedTask;
 
-        Notifications.TestNotification();
+        logger.LogInformation("button pressed");
+
+        Notifications.TestNotification(Resource.Drawable.dotnet_bot, logger);
     }
 
 
