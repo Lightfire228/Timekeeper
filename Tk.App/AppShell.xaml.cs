@@ -12,7 +12,7 @@ public partial class AppShell : Shell {
     public AppShell(
         TkDbContext db
     ) {
-        this.db = db;
+        _db         = db;
         Task initDb = InitDb();
         
         InitializeComponent();
@@ -22,16 +22,16 @@ public partial class AppShell : Shell {
         Task.WaitAll([initDb]);
     }
 
-    TkDbContext db { get; set; }
+    TkDbContext _db { get; set; }
 
     private async Task InitDb() {
-        await db.Database.MigrateAsync();
+        await _db.Database.MigrateAsync();
 
-        bool hasData = await db.Tasks.AnyAsync();
+        bool hasData = await _db.Tasks.AnyAsync();
 
         if (!hasData) {
-            await db.Tasks.AddRangeAsync(TestData.Tasks);
-            await db.SaveChangesAsync();
+            await _db.Tasks.AddRangeAsync(TestData.Tasks);
+            await _db.SaveChangesAsync();
         }
     }
 

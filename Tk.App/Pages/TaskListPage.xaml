@@ -37,12 +37,6 @@
             Margin   = "20"
             Clicked  = "NewTask"
         />
-        <Button 
-            Grid.Row = "2"
-            Text     = "Test Notification"
-            Margin   = "20"
-            Clicked  = "Notification"
-        />
             
     </Grid>
 

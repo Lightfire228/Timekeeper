@@ -23,7 +23,6 @@ public partial class TaskListPage : ContentPage {
         this.logger = logger;
 
         BindingContext = Tasks;
-        
     }
 
     TkDbContext db     { get; set; }
@@ -55,22 +54,9 @@ public partial class TaskListPage : ContentPage {
         await Shell.Current.GoToAsync($"NewItemPage", true);
     }
 
-    private async void Notification(object sender, EventArgs e) {
-        await Task.CompletedTask;
-
-        logger.LogInformation("button pressed");
-
-        Notifications.TestNotification(Resource.Drawable.dotnet_bot, logger);
-    }
-
 
     private async void TasksSelectionChanged(object sender, SelectionChangedEventArgs e) {
         await Task.CompletedTask;
     }
-
-    private void Log(Exception ex) {
-        logger.LogError("{ex}", ex);
-    }
-
 }
 

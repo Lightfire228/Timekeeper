@@ -16,7 +16,7 @@ def main():
         try:
             done = menu()
 
-        except (KeyboardInterrupt | NameError):
+        except (KeyboardInterrupt, NameError):
             raise
         
         except:
@@ -24,6 +24,8 @@ def main():
 
 
 def menu() -> bool:
+
+    EXIT = True
 
     def no_op():
         ...
@@ -52,13 +54,13 @@ def menu() -> bool:
     usr_in = usr_in or '1'
 
     if usr_in == 'q':
-        return True
+        return EXIT
     
     op = opts.get(usr_in, Op('', no_op))
     op.func()
 
     print()
-    return False
+    return not EXIT
 
 def build_android_release():
     build_android(release=True)

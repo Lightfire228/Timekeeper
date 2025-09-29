@@ -35,5 +35,18 @@
         </Tab>
     </FlyoutItem>
 
+    <FlyoutItem
+        Title = "Test"
+        Icon  = "{mi:FontAwesomeSolid Icon=FlaskVial}"
+    >
+        <Tab>
+            <ShellContent
+                Title           = "Test"
+                ContentTemplate = "{DataTemplate views:TestPage}"
+                Route           = "TestPage"
+            />
+        </Tab>
+    </FlyoutItem>
+
 
 </Shell>

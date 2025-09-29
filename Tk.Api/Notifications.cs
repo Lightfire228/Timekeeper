@@ -54,4 +54,8 @@ public class Notifications {
         logger.LogInformation("Done");
     }
 
+    public static void TestReminder(int icon, ILogger logger) {
+        
+    }
+
 }
