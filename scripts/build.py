@@ -1,6 +1,7 @@
 from subprocess import CompletedProcess, run as s_run, PIPE
 from pathlib import Path
 import shutil
+import traceback
 
 from . import CONFIG
 
@@ -20,7 +21,7 @@ def main():
             raise
         
         except:
-            ...
+            traceback.print_exc()
 
 
 def menu() -> bool:
@@ -40,7 +41,7 @@ def menu() -> bool:
         '2': Op('cat log',                 cat_log),
         '3': Op('',                        no_op),
         '4': Op('',                        no_op),
-        '5': Op('clean build',             clean_build),
+        '5': Op('build problems',          build_problems),
         '6': Op('build android release',   build_android_release),
         'q': Op('quit',                    no_op),
     }
@@ -99,16 +100,22 @@ def cat_log():
 
     run([MOST, '+100000'], input=p.stdout)
 
-
-def clean_build():
+def build_problems():
 
     globs = [
         *Path('./').glob('**/obj/'),
         *Path('./').glob('**/bin/'),
     ]
 
+    print('>> Removing build files')
     for f in globs:
         shutil.rmtree(f)
+
+    print('>> dotnet workload repair')
+    run([CONFIG.dotnet, 'workload', 'repair'])
+
+    print('>> dotnet clean')
+    run([CONFIG.dotnet, 'clean'])
 
 
 def confirm() -> bool:

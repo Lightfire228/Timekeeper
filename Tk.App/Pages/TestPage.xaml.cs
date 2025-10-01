@@ -6,6 +6,7 @@ using Tk.Database;
 using Tk.Models;
 using Tk.Models.Database;
 using Tk.Api;
+using Microsoft.Maui.Platform;
 
 namespace Tk.App.Pages;
 
@@ -42,7 +43,9 @@ public partial class TestPage : ContentPage {
 
         logger.LogInformation("test notification button pressed");
 
-        Notifications.TestNotification(Resource.Drawable.dotnet_bot, logger);
+        // Microsoft.Maui.ApplicationModel.Platform.ac
+
+        Notifications.TestNotification(Resource.Drawable.dotnet_bot, typeof(TestPage), logger);
     }
 
     private async void Reminder(object sender, EventArgs e) {
@@ -50,7 +53,7 @@ public partial class TestPage : ContentPage {
 
         logger.LogInformation("test reminder button pressed");
 
-        Notifications.TestReminder(Resource.Drawable.dotnet_bot, logger);
+        Notifications.TestReminder(Resource.Drawable.dotnet_bot, typeof(TestPage), logger);
     }
 
 
