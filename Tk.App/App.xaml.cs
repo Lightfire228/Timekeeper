@@ -1,5 +1,4 @@
 ﻿
-using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.Logging;
 using Tk.Database;
 
@@ -28,6 +27,26 @@ public partial class App : Application {
 
     void LogException(object? sender, UnhandledExceptionEventArgs e) {
         Logger.LogError("Uncaught Exception in App");
-        Logger.LogError("{ex}", e.ExceptionObject);
+
+        var ex = e.ExceptionObject;
+
+        if (ex == null) {
+            Logger.LogError("null exception");
+            return;
+        }
+
+        var msg = $"{e.ExceptionObject}"
+            .Split("\n")
+            .First()
+        ;
+
+        // FIXME:
+        var stacktrace = 
+              msg.Contains("Font asset not found")? "Font asset not found"
+            : msg.Contains("Unable to load font") ? "Unable to load font"
+            : $"{e.ExceptionObject}"
+        ;
+
+        Logger.LogError("{ex}", stacktrace);
     }
 }

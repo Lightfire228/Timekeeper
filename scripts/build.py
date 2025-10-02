@@ -93,9 +93,24 @@ def build_android(release=False):
 
 def cat_log():
 
+    print('>> 1 -                  log.log (default)')
+    print('>> 2 -              startup.log')
+    print('>> 3 - notification_manager.log')
+    print('>> 4 -        alarm_handler.log')
+
+    usr_in = input('>>> ')
+
+    usr_in = usr_in.strip() or '1'
+
+    match usr_in:
+        case '1': file =                  'log.log'
+        case '2': file =              'startup.log'
+        case '3': file = 'notification_manager.log'
+        case '4': file =        'alarm_handler.log'
+
     p = run([
         ADB, 'shell',
-        'su -c "cat /data/data/com.companyname.Tk.App.Develop/files/log.log"'
+        f'su -c "cat /data/data/com.companyname.Tk.App.Develop/files/{file}"'
     ], capture_out=True)
 
     run([MOST, '+100000'], input=p.stdout)

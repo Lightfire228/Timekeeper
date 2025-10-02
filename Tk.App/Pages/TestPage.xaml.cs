@@ -45,15 +45,31 @@ public partial class TestPage : ContentPage {
 
         // Microsoft.Maui.ApplicationModel.Platform.ac
 
-        Notifications.TestNotification(Resource.Drawable.dotnet_bot, typeof(TestPage), logger);
+        // Notifications.TestNotification(Resource.Drawable.dotnet_bot, typeof(TestPage), logger);
+
+        // Works
+        var manager = NotificationManagerService.GetInstance();
+        manager.SendNotification("test", "test with manager", new() {
+            MainActivity = typeof(MainActivity),
+            SmallIcon    = Resource.Drawable.dotnet_bot,
+            LargeIcon    = Resource.Drawable.dotnet_bot,
+        });
     }
 
+    // Bork
     private async void Reminder(object sender, EventArgs e) {
         await Task.CompletedTask;
 
         logger.LogInformation("test reminder button pressed");
 
-        Notifications.TestReminder(Resource.Drawable.dotnet_bot, typeof(TestPage), logger);
+        // Notifications.TestReminder(Resource.Drawable.dotnet_bot, typeof(TestPage), logger);
+
+        var manager = NotificationManagerService.GetInstance();
+        manager.SendNotification("test", "test 1m reminder", new() {
+            MainActivity = typeof(MainActivity),
+            SmallIcon    = Resource.Drawable.dotnet_bot,
+            LargeIcon    = Resource.Drawable.dotnet_bot,
+        }, DateTime.Now.AddSeconds(10));
     }
 
 

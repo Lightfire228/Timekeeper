@@ -1,11 +1,8 @@
 
 namespace Tk.Api;
 
-using System.Threading.Channels;
 using Android.App;
 using Android.Content;
-using Android.Graphics.Drawables;
-using Android.OS;
 using AndroidX.Core.App;
 using Microsoft.Extensions.Logging;
 
@@ -16,9 +13,9 @@ public class Notifications {
 
     static readonly string ChannelId = "test";
 
-    static Context Ctx { get; } = Application.Context;
+    static Context Ctx { get; }      = Application.Context;
 
-    static int Id { get; set; } = 0;
+    static int      Id { get; set; } = 0;
 
     public static void RegisterTestChannel() {
 
@@ -30,32 +27,36 @@ public class Notifications {
     }
 
     // Android `R.resource` uses ints as ids
-    public static void TestNotification(int icon, ILogger logger) {
+    public static void TestNotification(int icon, Type type, ILogger logger) {
+
+        var id = ++Id;
 
         logger.LogInformation("Register notif channel");
         RegisterTestChannel();
 
-        // var pendingIntent = PendingIntent.GetActivity(Ctx, 0, null, PendingIntentFlags.Immutable);
+        var intent        = new Intent(Ctx, type);
+        var pendingIntent = PendingIntent.GetActivity(Ctx, 0, intent, PendingIntentFlags.Immutable);
 
         logger.LogInformation("Register build notif");
         var builder = new NotificationCompat.Builder(Ctx, ChannelId)
-             .SetContentTitle("test title")
-            !.SetSmallIcon   (icon)
-            !.SetContentText ("test text")
-            !.SetPriority    (NotificationCompat.PriorityDefault)
-            !.SetAutoCancel  (true)
+             .SetContentTitle ("test title")
+            !.SetSmallIcon    (icon)
+            !.SetContentText  ($"test text: {id}")
+            !.SetPriority     (NotificationCompat.PriorityDefault)
+            !.SetContentIntent(pendingIntent)
+            !.SetAutoCancel   (true)
         ;
 
         // TODO: check for notif permissions, and ask to enable
 
         logger.LogInformation("Send notif");
-        NotificationManagerCompat.From(Ctx)!.Notify(++Id, builder!.Build());
+        NotificationManagerCompat.From(Ctx)!.Notify(id, builder!.Build());
 
         logger.LogInformation("Done");
     }
 
-    public static void TestReminder(int icon, ILogger logger) {
-        
+    public static void TestReminder(int icon, Type target, ILogger logger) {
+        var intent = new Intent(Ctx, target);
     }
 
 }
