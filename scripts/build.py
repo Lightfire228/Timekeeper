@@ -80,10 +80,10 @@ def build_android(release=False):
         ]
 
     run([
-         CONFIG.dotnet, 'build', 'Tk.App', '-t:Run',
+         CONFIG.dotnet, 'build', 'Tk.App.Android', '-t:Run',
 
          '-f:net9.0-android',
-        f'-p:DeviceName={CONFIG.device_id_develop}',
+        f'-p:DeviceName={CONFIG.device_id}',
         f'-p:AndroidSdkDirectory={CONFIG.android_sdk}',
         f'-p:JavaSdkDirectory={CONFIG.jdk}',
          '-t:InstallAndroidDependencies',
