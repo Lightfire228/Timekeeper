@@ -7,4 +7,9 @@ class Library {
     fun someLibraryMethod(): Boolean {
         return true
     }
+
+}
+
+fun testFromKotlin(): String {
+    return "this is from kotlin";
 }
