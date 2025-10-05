@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- This looks like it does nothing, but the build fails without it -->
     <AndroidNamespaceReplacement Include='Tk.Kotlin' Replacement='Tk.Kotlin' />
   </ItemGroup>
 
