@@ -1,87 +1,87 @@
-﻿using Tk.Database;
-using Microsoft.EntityFrameworkCore;
-using MauiIcons.FontAwesome.Solid;
-using MauiIcons.FontAwesome;
-using Serilog;
-using Microsoft.Extensions.Logging;
-using System.Reflection;
-using Tk.App.Pages;
+﻿// using Tk.Database;
+// using Microsoft.EntityFrameworkCore;
+// using MauiIcons.FontAwesome.Solid;
+// using MauiIcons.FontAwesome;
+// using Serilog;
+// using Microsoft.Extensions.Logging;
+// using System.Reflection;
+// using Tk.App.Pages;
 
-namespace Tk.App;
+// namespace Tk.App;
 
-public static class MauiProgram {
+// public static class MauiProgram {
 
 
-    public static MauiApp CreateMauiApp() =>
+//     public static MauiApp CreateMauiApp() =>
 
-        MauiApp.CreateBuilder()
-            .UseMauiApp<App>()
-            .ConfigureFonts(fonts => {
-                fonts.AddFont("OpenSans-Regular.ttf",  "OpenSansRegular");
-                fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            })
-            .ConfigureLogging  ()
-            .ConfigureDb       ()
-            .ConfigureIcons    ()
-            .RegisterViews     ()
-            .RegisterViewModels()
-            .Build             ()
-    ;
+//         MauiApp.CreateBuilder()
+//             .UseMauiApp<App>()
+//             .ConfigureFonts(fonts => {
+//                 fonts.AddFont("OpenSans-Regular.ttf",  "OpenSansRegular");
+//                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+//             })
+//             .ConfigureLogging  ()
+//             .ConfigureDb       ()
+//             .ConfigureIcons    ()
+//             .RegisterViews     ()
+//             .RegisterViewModels()
+//             .Build             ()
+//     ;
 
-    public static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder) {
+//     public static MauiAppBuilder ConfigureLogging(this MauiAppBuilder builder) {
 
-        builder.Services.AddSerilog(opts => {
-            opts.WriteTo.File(
-                Path.Join(FileSystem.AppDataDirectory, "log.log")
-            );
-        });
+//         builder.Services.AddSerilog(opts => {
+//             opts.WriteTo.File(
+//                 Path.Join(FileSystem.AppDataDirectory, "log.log")
+//             );
+//         });
 
-        builder.Logging.AddDebug();
+//         builder.Logging.AddDebug();
 
-        return builder;
-    }
+//         return builder;
+//     }
 
-    public static MauiAppBuilder ConfigureDb(this MauiAppBuilder builder) {
+//     public static MauiAppBuilder ConfigureDb(this MauiAppBuilder builder) {
 
-        builder.Services.AddDbContext<TkDbContext>(opt => {
+//         builder.Services.AddDbContext<TkDbContext>(opt => {
 
-            var dbFile = Path.Join(FileSystem.AppDataDirectory, "timekeeper.db");
+//             var dbFile = Path.Join(FileSystem.AppDataDirectory, "timekeeper.db");
 
-            opt.UseSqlite($"Data Source={dbFile}");
-        });
+//             opt.UseSqlite($"Data Source={dbFile}");
+//         });
 
-        return builder;
-    }
+//         return builder;
+//     }
 
-    public static MauiAppBuilder ConfigureIcons(this MauiAppBuilder builder) {
+//     public static MauiAppBuilder ConfigureIcons(this MauiAppBuilder builder) {
 
-        builder.UseMauiApp<App>().UseFontAwesomeSolidMauiIcons();
-        builder.UseMauiApp<App>().UseFontAwesomeMauiIcons();
+//         builder.UseMauiApp<App>().UseFontAwesomeSolidMauiIcons();
+//         builder.UseMauiApp<App>().UseFontAwesomeMauiIcons();
 
-        return builder;
-    }
+//         return builder;
+//     }
 
-    public static MauiAppBuilder RegisterViews     (this MauiAppBuilder builder) => Register(builder, "Pages",      "Tk.App.Pages");
-    public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder) => Register(builder, "ViewMiodel", "Tk.App.ViewModels");
+//     public static MauiAppBuilder RegisterViews     (this MauiAppBuilder builder) => Register(builder, "Pages",      "Tk.App.Pages");
+//     public static MauiAppBuilder RegisterViewModels(this MauiAppBuilder builder) => Register(builder, "ViewMiodel", "Tk.App.ViewModels");
 
-    static MauiAppBuilder Register(
-        MauiAppBuilder builder,
-        string         name,
-        string         ns
-    ) {
-        Assembly
-            .GetAssembly(typeof(MauiProgram))!
-            .GetTypes()
-            .Where(t => 
-                   t.IsClass
-                && t.Name.EndsWith(name)
-                && (t.Namespace ?? "").StartsWith(ns)
-            )
-            .ToList()
-            .ForEach(x => builder.Services.AddSingleton(x))
-        ;
+//     static MauiAppBuilder Register(
+//         MauiAppBuilder builder,
+//         string         name,
+//         string         ns
+//     ) {
+//         Assembly
+//             .GetAssembly(typeof(MauiProgram))!
+//             .GetTypes()
+//             .Where(t => 
+//                    t.IsClass
+//                 && t.Name.EndsWith(name)
+//                 && (t.Namespace ?? "").StartsWith(ns)
+//             )
+//             .ToList()
+//             .ForEach(x => builder.Services.AddSingleton(x))
+//         ;
 
-        return builder;
-    }
+//         return builder;
+//     }
 
-}
+// }

@@ -39,7 +39,7 @@ def menu() -> bool:
     opts = {
         '1': Op('build android (default)', build_android),
         '2': Op('cat log',                 cat_log),
-        '3': Op('',                        no_op),
+        '3': Op('build kotlin',            build_kotlin),
         '4': Op('',                        no_op),
         '5': Op('build problems',          build_problems),
         '6': Op('build android release',   build_android_release),
@@ -70,6 +70,8 @@ def build_android(release=False):
 
     args = []
 
+    build_kotlin()
+
     if release:
         if not confirm():
             return
@@ -90,6 +92,17 @@ def build_android(release=False):
          '-p:AcceptAndroidSDKLicenses=True',
         *args
     ])
+
+def build_kotlin():
+
+    dir  = Path('./kotlin/')
+    lib  = dir / 'app/build/libs/app.jar'
+
+    dest = Path('./Tk.Kotlin/app.jar')
+
+    run(['./gradlew', 'build'], cwd = dir)
+
+    dest.write_bytes(lib.read_bytes())
 
 def cat_log():
 
@@ -141,13 +154,14 @@ def confirm() -> bool:
 def run(
         cmds: list[str | Path],
 
-        allow_error      = False,
-        capture_out      = False,
-        cwd:        str  = None,
-        input:      str  = None,
+        allow_error             = False,
+        capture_out             = False,
+        cwd:        str | Path  = None,
+        input:      str         = None,
 ) -> CompletedProcess[bytes]:
 
     cmds   = [str(x) for x in cmds]
+    cwd    = cwd and str(cwd)
 
     stdout = PIPE if capture_out else None
 
