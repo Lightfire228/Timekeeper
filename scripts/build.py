@@ -70,8 +70,6 @@ def build_android(release=False):
 
     args = []
 
-    build_kotlin()
-
     if release:
         if not confirm():
             return
@@ -80,6 +78,8 @@ def build_android(release=False):
             *args,
             '--configuration', 'Release',
         ]
+
+    build_kotlin()
 
     run([
          CONFIG.dotnet, 'build', 'Tk.App.Android', '-t:Run',
@@ -96,9 +96,9 @@ def build_android(release=False):
 def build_kotlin():
 
     dir  = Path('./kotlin/')
-    lib  = dir / 'app/build/libs/app.jar'
+    lib  = dir / 'app/build/outputs/aar/app-debug.aar'
 
-    dest = Path('./Tk.Kotlin/app.jar')
+    dest = Path('./Tk.Kotlin/timekeeper.aar')
 
     run(['./gradlew', 'build'], cwd = dir)
 

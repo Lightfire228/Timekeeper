@@ -1,7 +1,9 @@
+<!-- https://learn.microsoft.com/en-us/dotnet/android/binding-libs/binding-java-libs/binding-java-library -->
+
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0-android</TargetFramework>
-    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <!--
@@ -16,8 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- This looks like it does nothing, but the build fails without it -->
-    <AndroidNamespaceReplacement Include='Tk.Kotlin' Replacement='Tk.Kotlin' />
+    <!-- <AndroidNamespaceReplacement Include='Tk.Kotlin' Replacement='Tk.Android.Timekeeper' /> -->
+    <AndroidNamespaceReplacement Include='Tk.Android.Timekeeper' Replacement='Tk.Android.Timekeeper' />
   </ItemGroup>
 
 </Project>
