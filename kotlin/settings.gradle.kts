@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "timekeeper"
+rootProject.name = "Tk.Android.Timekeeper"
 include(":app")
-include(":mylibrary")

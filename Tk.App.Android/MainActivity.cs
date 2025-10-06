@@ -3,6 +3,7 @@ using Android.OS;
 
 namespace Tk.App.Android;
 
+
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity 
     : Tk.Android.Timekeeper.MainActivityKt

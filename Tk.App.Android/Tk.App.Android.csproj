@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net9.0-android</TargetFramework>
-    <SupportedOSPlatformVersion>24</SupportedOSPlatformVersion>
+    <SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -32,7 +32,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tk.Kotlin\Tk.Kotlin.csproj" />
+    <!-- <ProjectReference Include="..\Tk.Kotlin\Tk.Kotlin.csproj" /> -->
+      <!-- <AndroidGradleProject Include="path/to/project/build.gradle.kts" ModuleName="mylibrary" /> -->
+      <AndroidGradleProject Include="../kotlin/build.gradle.kts" ModuleName="app" />
+      <AndroidNamespaceReplacement Include='Tk.Android.Timekeeper' Replacement='Tk.Android.Timekeeper' />
+
   </ItemGroup>
 
 </Project>
