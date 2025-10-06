@@ -79,7 +79,7 @@ def build_android(release=False):
             '--configuration', 'Release',
         ]
 
-    # build_kotlin()
+    build_kotlin()
 
     run([
          CONFIG.dotnet, 'build', 'Tk.App.Android', '-t:Run',
@@ -95,14 +95,10 @@ def build_android(release=False):
 
 def build_kotlin():
 
-    dir  = Path('./kotlin/')
-    lib  = dir / 'app/build/outputs/aar/app-debug.aar'
-
-    dest = Path('./Tk.Kotlin/timekeeper.aar')
+    dir = Path('./kotlin/')
 
     run(['./gradlew', 'build'], cwd = dir)
 
-    dest.write_bytes(lib.read_bytes())
 
 def cat_log():
 
