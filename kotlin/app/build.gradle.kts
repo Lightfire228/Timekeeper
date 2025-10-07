@@ -30,21 +30,27 @@ android {
     }
 }
 
+// <!-- If the app crashes with a "class not found", add it in Tk.App.Android.csproj
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(                    libs.androidx.core.ktx)
+    implementation(                    libs.androidx.lifecycle.runtime.ktx)
+    implementation(                    libs.androidx.activity.compose)
+    implementation(           platform(libs.androidx.compose.bom))
+    implementation(                    libs.androidx.compose.ui)
+    implementation(                    libs.androidx.compose.ui.graphics)
+    implementation(                    libs.androidx.compose.ui.tooling.preview)
+    implementation(                    libs.androidx.compose.material3)
+    testImplementation(                libs.junit)
+    androidTestImplementation(         libs.androidx.junit)
+    androidTestImplementation(         libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(         libs.androidx.compose.ui.test.junit4)
+    debugImplementation(               libs.androidx.compose.ui.tooling)
+    debugImplementation(               libs.androidx.compose.ui.test.manifest)
+    
+    // implementation("androidx.activity:activity-ktx")
+    // implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
+    // implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
+    
 }

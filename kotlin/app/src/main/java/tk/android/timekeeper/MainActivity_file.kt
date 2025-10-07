@@ -19,6 +19,25 @@ import tk.android.timekeeper.ui.theme.TimekeeperTheme
 // }
 
 
+
+open class KMainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            TimekeeperTheme {
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    Greeting(
+                        name = "Android",
+                        modifier = Modifier.padding(innerPadding)
+                    )
+                }
+            }
+        }
+    }
+}
+
+
 public class Test {
     public fun testActivity(): String {
         return "test activity"
@@ -28,7 +47,7 @@ public class Test {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello $name from jetpack compose!!!",
         modifier = modifier
     )
 }

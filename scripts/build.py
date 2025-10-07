@@ -119,7 +119,7 @@ def cat_log():
 
     p = run([
         ADB, 'shell',
-        f'su -c "cat /data/data/com.companyname.Tk.App.Develop/files/{file}"'
+        f'su -c "cat /data/data/Tk.App.Android.Develop/files/{file}"'
     ], capture_out=True)
 
     run([MOST, '+100000'], input=p.stdout)

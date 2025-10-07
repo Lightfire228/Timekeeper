@@ -1,32 +1,53 @@
 using Android.App;
 using Android.OS;
 using Android.Runtime;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Tk.App.Android;
 
+using Logger = ILogger<MainActivity>;
 
 [Activity(Label = "@string/app_name", MainLauncher = true)]
-public class MainActivity //_CS(IntPtr javaReference, JniHandleOwnership transfer) 
-    // : Tk.Android.Timekeeper.MainActivity_fileKt.MainActivity(javaReference, transfer)
-    : Activity
+public class MainActivity
+    : Tk.Android.Timekeeper.KMainActivity
+    // : Activity
 {
 
-    protected override void OnCreate(Bundle? savedInstanceState) {
+    protected override void OnCreate(Bundle? savedInstanceState) => WithLogging(() => {
+        Logger.LogInformation("On Create");
         base.OnCreate(savedInstanceState);
+    });
 
-        var test = new Tk.Android.Timekeeper.Test();
-
-        var b = new Tk.Android.Timekeeper.HiActivity2();
-        var a = new Tk.Android.Timekeeper.HiActivity();
-
+    protected void WithLogging(Action action) {
+        try {
+            action();
+        }
+        catch (Exception e) {
+            Logger.LogError("Uncaught error on Main Activity: {e}", e);
+        }
+        finally {
+            Logger.LogInformation("ugugugugug");
+        }
         
+    }
 
-        // Console.WriteLine($">>>>>>>>>>>> {TestKt.TestString()}");
+    static readonly Logger Logger = BuildLogger();
 
-        // Set our view from the "main" layout resource
-        SetContentView(Resource.Layout.activity_main);
+    static Logger BuildLogger() {
+        var serilog = new LoggerConfiguration()
+            .WriteTo.Console()
+            .WriteTo.File("/data/data/Tk.App.Android.Develop/files/startup.log")
+            .CreateLogger()
+        ;
 
-        var toast = Toast.MakeText(this, test.TestActivity(), ToastLength.Long);
-        toast!.Show();
+        var logger = new LoggerFactory()
+            .AddSerilog(serilog)
+            .CreateLogger<MainActivity>()
+        ;
+
+        logger.LogInformation("init");
+
+        return logger;
     }
 }
