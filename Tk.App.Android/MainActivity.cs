@@ -11,25 +11,18 @@ using Logger = ILogger<MainActivity>;
 [Activity(Label = "@string/app_name", MainLauncher = true)]
 public class MainActivity
     : Tk.Android.Timekeeper.KMainActivity
-    // : Activity
 {
 
-    protected override void OnCreate(Bundle? savedInstanceState) => WithLogging(() => {
+    static MainActivity() {
+
+        AppDomain.CurrentDomain.UnhandledException += (sender, e) => {
+            Logger.LogError("Uncaught error on Main Activity: {e}", e.ExceptionObject);
+        };
+    }
+
+    protected override void OnCreate(Bundle? savedInstanceState) {
         Logger.LogInformation("On Create");
         base.OnCreate(savedInstanceState);
-    });
-
-    protected void WithLogging(Action action) {
-        try {
-            action();
-        }
-        catch (Exception e) {
-            Logger.LogError("Uncaught error on Main Activity: {e}", e);
-        }
-        finally {
-            Logger.LogInformation("ugugugugug");
-        }
-        
     }
 
     static readonly Logger Logger = BuildLogger();
