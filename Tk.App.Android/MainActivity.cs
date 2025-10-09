@@ -13,6 +13,8 @@ public class MainActivity
     : Tk.Android.Timekeeper.KMainActivity
 {
 
+    public override int Icon { get => Resource.Drawable.appicon; }
+
     static MainActivity() {
 
         AppDomain.CurrentDomain.UnhandledException += (sender, e) => {

@@ -12,7 +12,6 @@
       To learn more, see: https://learn.microsoft.com/dotnet/core/deploying/trimming/trimming-options#trimming-granularity
     -->
     <TrimMode>full</TrimMode>
-    
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' != 'DEBUG'">
@@ -36,9 +35,9 @@
       <AndroidNamespaceReplacement Include="Tk.Android.Timekeeper" Replacement="Tk.Android.Timekeeper" />
   </ItemGroup>
 
-  <!-- <ItemGroup>
-    <AndroidMavenLibrary Repository="Google" Include="androidx.activity:activity-ktx" Version="1.11.0" Bind="false" />
-  </ItemGroup> -->
+  <ItemGroup>
+    <AndroidResource Include="Resources/drawable/*" />
+  </ItemGroup>
 
   <ItemGroup>
     <!-- If the app crashes with a "class not found", add it here -->

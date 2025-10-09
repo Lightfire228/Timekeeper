@@ -79,8 +79,6 @@ def build_android(release=False):
             '--configuration', 'Release',
         ]
 
-    build_kotlin()
-
     run([
          CONFIG.dotnet, 'build', 'Tk.App.Android', '-t:Run',
 

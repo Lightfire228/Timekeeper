@@ -30,7 +30,7 @@ android {
     }
 }
 
-// <!-- If the app crashes with a "class not found", add it in Tk.App.Android.csproj
+// If the app crashes with a "class not found", add it in Tk.App.Android.csproj
 dependencies {
 
     implementation(                    libs.androidx.core.ktx)

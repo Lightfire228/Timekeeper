@@ -19,7 +19,7 @@ using Path = System.IO.Path;
 // https://learn.microsoft.com/en-us/dotnet/maui/platform-integration/local-notifications?view=net-maui-9.0&pivots=devices-android
 
 public class NotificationManagerService
-    : INotificationManagerService
+    // : INotificationManagerService
 {
 
     const string channelId          = "default";
@@ -217,12 +217,12 @@ public class NotificationManagerService
     }
 }
 
-public interface INotificationManagerService {
+// public interface INotificationManagerService {
 
-    event EventHandler NotificationReceived;
-    void SendNotification   (string title, string message, Resources resources, DateTime? notifyTime = null);
-    void ReceiveNotification(string title, string message);
-}
+//     event EventHandler NotificationReceived;
+//     void SendNotification   (string title, string message, Resources resources, DateTime? notifyTime = null);
+//     void ReceiveNotification(string title, string message);
+// }
 
 public class NotificationEventArgs() 
     : EventArgs
