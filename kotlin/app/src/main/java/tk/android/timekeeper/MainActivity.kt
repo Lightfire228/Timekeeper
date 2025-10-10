@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.colorResource
@@ -32,6 +34,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.clickable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 
 
 
@@ -63,7 +72,7 @@ abstract class KMainActivity : ComponentActivity() {
 
 @Composable
 fun MainContent(icon: Int) {
-    MessageCard(Message("Android", "Jetpack Compose"), icon)
+    Conversation(SampleData.conversationSample, icon)
 }
 
 
@@ -95,20 +104,36 @@ fun MessageCard(msg: Message, icon: Int) {
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        Column {
+        // keep track of the message state
+        var isExpanded   by remember { mutableStateOf(false) }
+        val surfaceColor by animateColorAsState(
+            if (isExpanded) MaterialTheme.colorScheme.primary   else MaterialTheme.colorScheme.surface
+        )
+        val textColor by animateColorAsState(
+            if (isExpanded) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+        )
+
+        Column (modifier = Modifier.clickable { isExpanded = !isExpanded } ) {
             Text (
-                text  = msg.author,
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography .titleSmall,
+                text     = msg.author,
+                color    = MaterialTheme.colorScheme.secondary,
+                style    = MaterialTheme.typography .titleSmall,
+                modifier = Modifier.animateContentSize().padding(1.dp),
             )
             
             Spacer(modifier = Modifier.height(4.dp))
 
-            Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 1.dp) {
+            Surface(
+                shape           = MaterialTheme.shapes.medium,
+                shadowElevation = 1.dp,
+                color           = surfaceColor,
+            ) {
                 Text (
                     text     = msg.body,
                     modifier = Modifier.padding(all = 4.dp),
+                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
                     style    = MaterialTheme.typography.bodyMedium,
+                    color    = textColor,
                 )
             }
         }
