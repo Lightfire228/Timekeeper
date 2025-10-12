@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.colorResource
 import tk.android.timekeeper.ui.theme.TimekeeperTheme
+import tk.android.timekeeper.NavbarPages
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.Image
@@ -42,9 +43,7 @@ import kotlinx.coroutines.launch
 
 abstract class KMainActivity : ComponentActivity() {
 
-    abstract fun getIcon(): Int;
-
-    abstract fun tasks(): List<KTaskModel>;
+    abstract fun getDataService(): KDataService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +52,19 @@ abstract class KMainActivity : ComponentActivity() {
             TimekeeperTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(modifier = Modifier.padding(innerPadding)) {
-                        MainContent(tasks().toList(), getIcon())
+                        MainContent(getDataService())
                     }
                 }
             }
         }
     }
+}
+
+public abstract class KDataService {
+    abstract fun getIcon(): Int;
+
+    abstract fun getTasks():   List<KTaskModel>;
+
 }
 
 public open class KTaskModel(
@@ -71,18 +77,25 @@ public open class KTaskModel(
 )
 
 @Composable
-fun MainContent(tasks: List<KTaskModel>, icon: Int) {
-    Navbar { 
-        Conversation(tasks, icon)
-    }
+fun MainContent(data: KDataService) {
+    Navbar (data)
 }
 
 
 @Composable
-fun Navbar(content: @Composable (Modifier) -> Unit) {
+fun Navbar(data: KDataService) {
 
     var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed);
     val scope       = rememberCoroutineScope();
+
+    var page by remember { mutableStateOf(NavbarPages.TaskList) }
+
+    var onClick = fun (p: NavbarPages) {
+        page = p
+        scope.launch {
+            drawerState.close()
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState   = drawerState,
@@ -90,11 +103,16 @@ fun Navbar(content: @Composable (Modifier) -> Unit) {
             ModalDrawerSheet {
                 Text("Drawer title")
 
-                HorizontalDivider()
+                // HorizontalDivider()
                 NavigationDrawerItem(
-                    label    = { Text(text = "Drawer Item") },
-                    selected = false,
-                    onClick  = { /*TODO*/ }
+                    label    = { Text(text = "Task List") },
+                    selected = page == NavbarPages.TaskList,
+                    onClick  = { onClick(NavbarPages.TaskList) }
+                )
+                NavigationDrawerItem(
+                    label    = { Text(text = "Test Page") },
+                    selected = page == NavbarPages.TestPage,
+                    onClick  = { onClick(NavbarPages.TestPage) }
                 )
             }
         }
@@ -114,13 +132,26 @@ fun Navbar(content: @Composable (Modifier) -> Unit) {
                 )
             }
         ) { contentPadding ->
-            content(Modifier.padding(contentPadding))
+            Surface(modifier = Modifier.padding(contentPadding)) {
+                when (page) {
+                    NavbarPages.TaskList -> TaskList(data)
+                    NavbarPages.TestPage -> TestPage(data)
+                }
+            }
         }
     }
 }
 
+enum class NavbarPages {
+    TaskList,
+    TestPage,
+}
+
 @Composable
-fun Conversation(tasks: List<KTaskModel>, icon: Int) {
+fun TaskList(data: KDataService) {
+
+    var tasks = remember { data.getTasks() }
+    var icon  = data.getIcon();
 
     LazyColumn {
         items(tasks) { x ->
@@ -185,3 +216,7 @@ fun MessageCard(msg: Message, icon: Int) {
 
 }
 
+@Composable
+fun TestPage(data: KDataService) {
+    Text("test page")
+}

@@ -15,17 +15,20 @@ namespace Tk.App.Android;
 using Logger = ILogger<MainActivity>;
 
 
-[Activity(Label = "@string/app_name", MainLauncher = true)]
+[Activity(MainLauncher = true)]
 public class MainActivity
     : KMainActivity
 {
 
+    private readonly DataService _ds;
+
     const string AndroidDataPath = "/data/data/Tk.App.Android.Develop/files";
 
-    public MainActivity() {
-    }
+    public override KDataService DataService { get => _ds; }
 
-    public override int Icon { get => Resource.Drawable.appicon; }
+    public MainActivity() {
+        _ds = new(Db);
+    }
 
     private TkDbContext Db { get; set; } = new(
         new DbContextOptionsBuilder<TkDbContext>() {}
@@ -33,19 +36,7 @@ public class MainActivity
         .Options
     );
 
-    public override IList<KTaskModel> Tasks() =>
-        [..Db.Tasks
-            .ToList()
-            .Select(x => new KTaskModel(
-                x.Id,
-                x.Name,
-                x.Description,
-                x.Priority .ToInt(),
-                x.Due     ?.ToString(),
-                x.CreatedAt.ToString()
-            ))
-        ]
-    ;
+
     
 
     static MainActivity() {
@@ -110,4 +101,28 @@ public class MainActivity
 
 static class Extensions {
     public static int ToInt(this TaskPriority priority) => (int) priority;
+}
+
+public class DataService(TkDbContext db)
+    : KDataService
+{
+
+    private readonly TkDbContext Db = db;
+
+
+    public override int Icon { get => Resource.Drawable.appicon; }
+
+    public override IList<KTaskModel> Tasks { get =>
+        [..Db.Tasks
+            .ToList()
+            .Select(x => new KTaskModel(
+                x.Id,
+                x.Name,
+                x.Description,
+                x.Priority .ToInt(),
+                x.Due     ?.ToString(),
+                x.CreatedAt.ToString()
+            ))
+        ]
+    ;}
 }
