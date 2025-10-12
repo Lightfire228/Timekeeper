@@ -42,7 +42,9 @@ import kotlinx.coroutines.launch
 
 abstract class KMainActivity : ComponentActivity() {
 
-    abstract fun GetIcon(): Int;
+    abstract fun getIcon(): Int;
+
+    abstract fun tasks(): List<KTaskModel>;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +53,7 @@ abstract class KMainActivity : ComponentActivity() {
             TimekeeperTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Surface(modifier = Modifier.padding(innerPadding)) {
-                        MainContent(GetIcon())
+                        MainContent(tasks().toList(), getIcon())
                     }
                 }
             }
@@ -59,10 +61,19 @@ abstract class KMainActivity : ComponentActivity() {
     }
 }
 
+public open class KTaskModel(
+    val id:          Long,
+    val name:        String,
+    val description: String,
+    val priority:    Int,
+    val due:         String?,
+    val createdAt:   String,
+)
+
 @Composable
-fun MainContent(icon: Int) {
+fun MainContent(tasks: List<KTaskModel>, icon: Int) {
     Navbar { 
-        Conversation(SampleData.conversationSample, icon)
+        Conversation(tasks, icon)
     }
 }
 
@@ -109,10 +120,11 @@ fun Navbar(content: @Composable (Modifier) -> Unit) {
 }
 
 @Composable
-fun Conversation(messages: List<Message>, icon: Int) {
+fun Conversation(tasks: List<KTaskModel>, icon: Int) {
+
     LazyColumn {
-        items(messages) { message ->
-            MessageCard(message, icon)
+        items(tasks) { x ->
+            MessageCard(Message(x.name, x.description), icon)
         }
     }
 }

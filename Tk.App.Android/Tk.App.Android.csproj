@@ -56,5 +56,11 @@
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tk.Api\Tk.Api.csproj" />
+    <ProjectReference Include="..\Tk.Models\Tk.Models.csproj" />
+    <ProjectReference Include="..\Tk.Database\Tk.Database.csproj" />
+  </ItemGroup>
+
 
 </Project>
