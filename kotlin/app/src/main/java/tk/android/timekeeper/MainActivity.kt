@@ -15,6 +15,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.colorResource
 import tk.android.timekeeper.ui.theme.TimekeeperTheme
 import tk.android.timekeeper.NavbarPages
+import tk.android.timekeeper.pages.TaskList
+import tk.android.timekeeper.pages.TestPage
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.Image
@@ -145,78 +147,4 @@ fun Navbar(data: KDataService) {
 enum class NavbarPages {
     TaskList,
     TestPage,
-}
-
-@Composable
-fun TaskList(data: KDataService) {
-
-    var tasks = remember { data.getTasks() }
-    var icon  = data.getIcon();
-
-    LazyColumn {
-        items(tasks) { x ->
-            MessageCard(Message(x.name, x.description), icon)
-        }
-    }
-}
-
-
-
-data class Message(val author: String, val body: String)
-
-@Composable
-fun MessageCard(msg: Message, icon: Int) {
-
-    Row {
-        Image(
-            painter            = painterResource(icon),
-            contentDescription = "",
-            modifier           = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                // .border(1.5.dp, MaterialTheme.colorScheme.primary)
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
-        // keep track of the message state
-        var isExpanded   by remember { mutableStateOf(false) }
-        val surfaceColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.primary   else MaterialTheme.colorScheme.surface
-        )
-        val textColor by animateColorAsState(
-            if (isExpanded) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
-        )
-
-        Column (modifier = Modifier.clickable { isExpanded = !isExpanded } ) {
-            Text (
-                text     = msg.author,
-                color    = MaterialTheme.colorScheme.secondary,
-                style    = MaterialTheme.typography .titleSmall,
-                modifier = Modifier.animateContentSize().padding(1.dp),
-            )
-            
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Surface(
-                shape           = MaterialTheme.shapes.medium,
-                shadowElevation = 1.dp,
-                color           = surfaceColor,
-            ) {
-                Text (
-                    text     = msg.body,
-                    modifier = Modifier.padding(all = 4.dp),
-                    maxLines = if (isExpanded) Int.MAX_VALUE else 1,
-                    style    = MaterialTheme.typography.bodyMedium,
-                    color    = textColor,
-                )
-            }
-        }
-    }
-
-}
-
-@Composable
-fun TestPage(data: KDataService) {
-    Text("test page")
 }
