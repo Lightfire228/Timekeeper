@@ -38,7 +38,6 @@ import androidx.compose.material.icons.outlined.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.CoroutineScope
 
-
 // @Composable
 // fun Main() {
     
@@ -69,6 +68,9 @@ public abstract class KDataService {
     abstract fun getIcon():  Int;
 
     abstract fun getTasks(): List<KTaskModel>;
+
+
+    abstract fun onNotificationButton(unixTimestamp: Long?);
 
 }
 
@@ -101,7 +103,7 @@ fun Navbar(data: KDataService) {
     fun DrawerItem(icon: ImageVector, name: String, targetPage: NavbarPages) {
         NavigationDrawerItem(
             label    = { Row {
-                Icon  (icon, contentDescription = "")
+                Icon  (icon, contentDescription = name)
                 Spacer(modifier = Modifier.width(3.dp))
                 Text  (name) 
             }},

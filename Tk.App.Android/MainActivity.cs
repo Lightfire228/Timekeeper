@@ -27,7 +27,7 @@ public class MainActivity
     public override KDataService DataService { get => _ds; }
 
     public MainActivity() {
-        _ds = new(Db);
+        _ds = new(Db, Logger);
     }
 
     private TkDbContext Db { get; set; } = new(
@@ -52,7 +52,6 @@ public class MainActivity
         var _ = InitDb();
 
         base.OnCreate(savedInstanceState);
-
 
     }
 
@@ -101,13 +100,26 @@ public class MainActivity
 
 static class Extensions {
     public static int ToInt(this TaskPriority priority) => (int) priority;
+
+    public static DateTime FromUnixTimestamp(this long unix) =>
+        DateTime.UnixEpoch.AddSeconds(unix)
+    ;
+
+    public static DateTime TrimToSeconds(this DateTime date) =>
+        new (
+            date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond),
+            date.Kind
+        )
+    ;
+
 }
 
-public class DataService(TkDbContext db)
+public class DataService(TkDbContext db, Logger logger)
     : KDataService
 {
 
-    private readonly TkDbContext Db = db;
+    private readonly TkDbContext Db     = db;
+    private readonly Logger      Logger = logger;
 
 
     public override int Icon { get => Resource.Drawable.appicon; }
@@ -125,4 +137,29 @@ public class DataService(TkDbContext db)
             ))
         ]
     ;}
+
+    public override void OnNotificationButton(Java.Lang.Long? unixTimestamp) {
+        
+        Logger.LogInformation("Notification event: {unixTimestamp}", unixTimestamp);
+
+        var date = unixTimestamp?.LongValue().FromUnixTimestamp();
+        var now  = DateTime.UtcNow.TrimToSeconds();
+        
+
+        if (date == null) {
+            Logger.LogInformation("Notif date is null");
+            return;
+        }
+
+
+        if (date < now) {
+            var e = new Exception($"Notification date '{date}' cannot be greater than now '{now}'");
+            Logger.LogError("{e}", e);
+            throw e;
+        }
+
+        Logger.LogInformation("Seconds from now: {diff} -- date: {date} -- now {now}", (date - now)?.TotalSeconds, date, now);
+
+        
+    }
 }

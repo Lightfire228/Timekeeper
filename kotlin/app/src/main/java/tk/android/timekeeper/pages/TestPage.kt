@@ -32,10 +32,50 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.material.icons.*
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.NotificationAdd
 import kotlinx.coroutines.launch
-
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun TestPage(data: KDataService) {
-    Text("test page")
+
+    // Column(modifier = Modifier.padding(3.dp)) {
+    Column() {
+        Btn(
+            name    = "Test Notification",
+            onClick = { 
+                data.onNotificationButton(null);
+            },
+        )
+        Btn(
+            name    = "Test Reminder +10s",
+            onClick = { 
+                var date = Calendar.getInstance()
+                date.add(Calendar.SECOND, 10)
+
+                data.onNotificationButton(getUnixTimestamp(date.getTime()))
+            },
+        )
+    }
+
+
+    // TODO: get notifications working
+}
+
+
+@Composable
+fun Btn(name: String, onClick: () -> Unit) {
+        Button(
+        onClick = onClick,
+    ) {
+        Icon(Icons.Outlined.NotificationAdd, "")
+        Spacer(modifier = Modifier.padding(1.5.dp))
+
+        Text(name)
+    }
+}
+
+fun getUnixTimestamp(date: Date): Long {
+    return date.getTime() / 1000L
 }
