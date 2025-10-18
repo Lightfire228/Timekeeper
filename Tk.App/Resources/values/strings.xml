@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Tk.App.Android</string>
+    <string name="app_name">Tk.App</string>
     <string name="app_text">Hello, Android!</string>
 </resources>

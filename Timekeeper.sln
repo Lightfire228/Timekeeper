@@ -4,13 +4,9 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Database", "Tk.Database\Tk.Database.csproj", "{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Api.AndroidApi", "Tk.Api.AndroidApi\Tk.Api.AndroidApi.csproj", "{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Api", "Tk.Api\Tk.Api.csproj", "{F11C49E4-EAF7-8CF9-7246-4B76446D5474}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Models", "Tk.Models\Tk.Models.csproj", "{392F8164-3E87-CF46-A8C5-3F00974AEC71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.App.Android", "Tk.App.Android\Tk.App.Android.csproj", "{6AA94C6B-43C4-13ED-DED6-1D23BBD41841}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.App", "Tk.App\Tk.App.csproj", "{6AA94C6B-43C4-13ED-DED6-1D23BBD41841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,14 +18,6 @@ Global
 		{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Release|Any CPU.Build.0 = Release|Any CPU
 		{392F8164-3E87-CF46-A8C5-3F00974AEC71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{392F8164-3E87-CF46-A8C5-3F00974AEC71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{392F8164-3E87-CF46-A8C5-3F00974AEC71}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -13,7 +13,7 @@ using Tk.Api.AndroidApi;
 using AndroidX.Core.App;
 using Tk.Api;
 
-namespace Tk.App.Android;
+namespace Tk.App;
 
 using Logger = ILogger<MainActivity>;
 
@@ -26,7 +26,7 @@ public class MainActivity
     private DataService                _ds                  = null!;
     private AndroidNotificationService _notificationService = null!;
 
-    const string AndroidDataPath = "/data/data/Tk.App.Android.Develop/files";
+    const string AndroidDataPath = "/data/data/Tk.App.Develop/files";
 
     public override KDataService DataService { get => _ds; }
 
@@ -66,17 +66,6 @@ public class MainActivity
         });
 
         _ds = new(Db, Logger, _notificationService!);
-
-        // var n = new AndroidNotificationService(new() {
-        //     CompatManager = NotificationManagerCompat.From(ApplicationContext)!,
-        //     NotifManager  = (NotificationManager)ApplicationContext!.GetSystemService(NotificationService)!,
-        //     MainActivity  = typeof(MainActivity),
-        //     AppContext    = ApplicationContext,
-        //     Logger        = BuildNotifLogger(),
-        //     SmallIcon     = Resource.Drawable.appicon,
-        //     LargeIcon     = Resource.Drawable.appicon,
-        // });
-
     }
 
     static readonly Logger Logger = BuildLogger();

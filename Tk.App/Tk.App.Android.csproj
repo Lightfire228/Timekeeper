@@ -19,7 +19,7 @@
     <ApplicationTitle>Timekeeper - Native Android</ApplicationTitle>
 
     <!-- App Identifier -->
-    <ApplicationId>Tk.App.Android</ApplicationId>
+    <ApplicationId>Tk.App</ApplicationId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'DEBUG'">
@@ -27,7 +27,7 @@
     <ApplicationTitle>Timekeeper - Native Android - Develop</ApplicationTitle>
 
     <!-- App Identifier -->
-    <ApplicationId>Tk.App.Android.Develop</ApplicationId>
+    <ApplicationId>Tk.App.Develop</ApplicationId>
   </PropertyGroup>
 
   <ItemGroup>
