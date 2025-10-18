@@ -60,6 +60,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tk.Api\Tk.Api.csproj" />
+    <ProjectReference Include="..\Tk.Api.AndroidApi\Tk.Api.AndroidApi.csproj" />
     <ProjectReference Include="..\Tk.Models\Tk.Models.csproj" />
     <ProjectReference Include="..\Tk.Database\Tk.Database.csproj" />
   </ItemGroup>

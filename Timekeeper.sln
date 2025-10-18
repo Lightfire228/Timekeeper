@@ -4,6 +4,8 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Database", "Tk.Database\Tk.Database.csproj", "{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Api.AndroidApi", "Tk.Api.AndroidApi\Tk.Api.AndroidApi.csproj", "{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Api", "Tk.Api\Tk.Api.csproj", "{F11C49E4-EAF7-8CF9-7246-4B76446D5474}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tk.Models", "Tk.Models\Tk.Models.csproj", "{392F8164-3E87-CF46-A8C5-3F00974AEC71}"
@@ -20,6 +22,10 @@ Global
 		{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C824DE-B8A9-AE68-5BC6-BC545AD6D47F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DC9198F-E62E-5B12-A2DF-FC0DD852A772}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F11C49E4-EAF7-8CF9-7246-4B76446D5474}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,6 +43,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BC842DF9-DD35-40E6-865A-3597B5468B5D}
+		SolutionGuid = {5F70624F-B86B-467E-AABB-8F3C3DA0261A}
 	EndGlobalSection
 EndGlobal
