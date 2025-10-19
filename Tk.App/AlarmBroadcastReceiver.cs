@@ -1,6 +1,6 @@
 using Android.Content;
 
-namespace Tk.Api.AndroidApi;
+namespace Tk.App;
 
 public class AlarmBroadcastRecevier
     : BroadcastReceiver

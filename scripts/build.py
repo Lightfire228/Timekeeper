@@ -2,6 +2,7 @@ from subprocess import CompletedProcess, run as s_run, PIPE
 from pathlib import Path
 import shutil
 import traceback
+import re
 
 from . import CONFIG
 
@@ -10,18 +11,7 @@ MOST = shutil.which('most')
 
 def main():
     
-    done = False
-
-    while not done:
-
-        try:
-            done = menu()
-
-        except (KeyboardInterrupt, NameError):
-            raise
-        
-        except:
-            traceback.print_exc()
+    while not menu(): ...
 
 
 def menu() -> bool:
@@ -79,11 +69,17 @@ def build_android(release=False):
             '--configuration', 'Release',
         ]
 
+    device_id = _get_device_id()
+
+    if device_id == None:
+        print('\a!! No device id found')
+        return
+
     run([
-         CONFIG.dotnet, 'build', 'Tk.App.Android', '-t:Run',
+         CONFIG.dotnet, 'build', 'Tk.App', '-t:Run',
 
          '-f:net9.0-android',
-        f'-p:DeviceName={CONFIG.device_id}',
+        f'-p:DeviceName={device_id}',
         f'-p:AndroidSdkDirectory={CONFIG.android_sdk}',
         f'-p:JavaSdkDirectory={CONFIG.jdk}',
          '-t:InstallAndroidDependencies',
@@ -117,7 +113,7 @@ def cat_log():
 
     p = run([
         ADB, 'shell',
-        f'su -c "cat /data/data/Tk.App.Android.Develop/files/{file}"'
+        f'su -c "cat /data/data/Tk.App.Develop/files/{file}"'
     ], capture_out=True)
 
     run([MOST, '+100000'], input=p.stdout)
@@ -165,6 +161,23 @@ def run(
         p.check_returncode()
 
     return p
+
+def _get_device_id() -> str | None:
+
+    p = run([ADB, 'devices'], capture_out=True)
+
+    lines = p.stdout.decode('utf-8').splitlines()
+    lines = lines[1:]
+    lines = [l.strip() for l in lines]
+    lines = [l         for l in lines if l != '']
+
+    for line in lines:
+        if m := re.match(r'\w+', line):
+            return m.group(0)
+        
+        
+
+    return None
 
 
 if __name__ == '__main__':

@@ -7,11 +7,9 @@ using Serilog;
 using Tk.Database;
 using Tk.Database.Migrations;
 using Tk.Models;
-using Tk.Android.Timekeeper;
 using Tk.Models.Database;
-using Tk.Api.AndroidApi;
 using AndroidX.Core.App;
-using Tk.Api;
+using Tk.Android.Timekeeper;
 
 namespace Tk.App;
 

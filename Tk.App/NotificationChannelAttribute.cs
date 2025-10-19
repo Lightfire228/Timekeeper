@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Tk.Api;
+namespace Tk.App;
 
 [AttributeUsage(AttributeTargets.Field)]
 public class NotificationChannelAttribute(

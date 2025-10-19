@@ -7,7 +7,7 @@ using AndroidX.Core.App;
 
 using Microsoft.Extensions.Logging;
 
-namespace Tk.Api.AndroidApi;
+namespace Tk.App;
 
 using ILogger = ILogger;
 

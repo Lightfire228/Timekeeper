@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Tk.Api;
+namespace Tk.App;
 
 public interface INotificationService {
     void SendNotification   (
