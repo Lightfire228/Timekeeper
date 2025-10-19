@@ -24,7 +24,7 @@ public class MainActivity
     private DataService                _ds                  = null!;
     private AndroidNotificationService _notificationService = null!;
 
-    const string AndroidDataPath = "/data/data/Tk.App.Develop/files";
+    public const string AndroidDataPath = "/data/data/Tk.App.Develop/files";
 
     public override KDataService DataService { get => _ds; }
 
@@ -189,7 +189,7 @@ public class DataService(TkDbContext db, Logger logger, INotificationService not
         }
 
         Logger.LogInformation("Seconds from now: {diff} -- date: {date} -- now {now}", (date - now)?.TotalSeconds, date, now);
-
+        NotifService.SendNotification("Test alarm title", "test alarm message", NotificationChannelType.Default, date);
         
     }
 }

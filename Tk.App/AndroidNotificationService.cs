@@ -24,6 +24,8 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
 
     readonly AndroidNotificationServiceOpts Opts = opts;
 
+    readonly AlarmScheduler                 AlarmScheduler = new(opts.AppContext, opts.Logger);
+
 
     static readonly bool ImmutableSupported = Build.VERSION.SdkInt >= BuildVersionCodes.S;
     static readonly bool ChannelsSupported  = Build.VERSION.SdkInt >= BuildVersionCodes.O;
@@ -40,7 +42,7 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
         
 
     public void SendNotification(string title, string message, NotificationChannelType channel, DateTime? notifyTime = null) {
-        Opts.Logger.LogInformation("Heyo");
+        Opts.Logger.LogInformation("send notif");
 
         CreateNotificationChannel(channel);
 
@@ -48,6 +50,17 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
             Show(title, message, channel);
             return;
         }
+
+        Opts.Logger.LogInformation("schedule notif");
+
+        AlarmScheduler.Schedule(new () {
+            ScheduledTime = notifyTime ?? throw new Exception("y tho"),
+            // ScheduledTime = notifyTime,
+            Message       = message,
+            Title         = title,
+        });
+
+
 
         // var pendingIntent = GetPendingIntent(
         //     title,
@@ -82,7 +95,7 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
 
     public void Show(string title, string message, NotificationChannelType channel) {
 
-        Opts.Logger.LogInformation("Log");
+        Opts.Logger.LogInformation("show notif");
 
         var pendingIntent = GetPendingIntent(
             title, 
