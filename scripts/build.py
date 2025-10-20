@@ -116,6 +116,9 @@ def cat_log():
         f'su -c "cat /data/data/Tk.App.Develop/files/{file}"'
     ], capture_out=True)
 
+    if bail_on_err(p):
+        return
+
     run([MOST, '+100000'], input=p.stdout)
 
 def build_problems():
@@ -144,7 +147,6 @@ def confirm() -> bool:
 def run(
         cmds: list[str | Path],
 
-        allow_error             = False,
         capture_out             = False,
         cwd:        str | Path  = None,
         input:      str         = None,
@@ -155,16 +157,18 @@ def run(
 
     stdout = PIPE if capture_out else None
 
-    p = s_run(cmds, cwd=cwd, stdout=stdout, input=input)
+    try:
+        return s_run(cmds, cwd=cwd, stdout=stdout, input=input)
+    except (KeyboardInterrupt):
+        return CompletedProcess(cmds, 1, b"", b"keyboard interrupt")
 
-    if not allow_error:
-        p.check_returncode()
-
-    return p
 
 def _get_device_id() -> str | None:
 
     p = run([ADB, 'devices'], capture_out=True)
+
+    if bail_on_err(p):
+        return
 
     lines = p.stdout.decode('utf-8').splitlines()
     lines = lines[1:]
@@ -174,10 +178,15 @@ def _get_device_id() -> str | None:
     for line in lines:
         if m := re.match(r'\w+', line):
             return m.group(0)
-        
-        
 
     return None
+
+def bail_on_err(p: CompletedProcess[bytes]) -> bool:
+    if p.returncode == 0:
+        return False
+
+    print('\a')
+    return True
 
 
 if __name__ == '__main__':

@@ -10,9 +10,9 @@ public static class TestData {
     public static List<TaskModel> Tasks { get; private set; } = [
         new() {
             Id          = ++TaskId,
-            Name        = "FUCK Priority Task",
+            Name        = "FUCKEN HIGH Priority Task",
             Description = "Description",
-            Priority    = TaskPriority.FUCK,
+            Priority    = TaskPriority.FUCKEN_HIGH,
             Due         = new DateTime(2026, 01, 01),
         },
         new() {

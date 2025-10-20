@@ -35,7 +35,7 @@ public class MainActivity
     );
 
 
-    
+
 
     static MainActivity() {
 
@@ -168,12 +168,12 @@ public class DataService(TkDbContext db, Logger logger, INotificationService not
     ;}
 
     public override void OnNotificationButton(Java.Lang.Long? unixTimestamp) {
-        
+
         Logger.LogInformation("Notification event: {unixTimestamp}", unixTimestamp);
 
         var date = unixTimestamp?.LongValue().FromUnixTimestamp();
         var now  = DateTime.UtcNow.TrimToSeconds();
-        
+
 
         if (date == null) {
             Logger.LogInformation("Notif date is null");
@@ -190,6 +190,6 @@ public class DataService(TkDbContext db, Logger logger, INotificationService not
 
         Logger.LogInformation("Seconds from now: {diff} -- date: {date} -- now {now}", (date - now)?.TotalSeconds, date, now);
         NotifService.SendNotification("Test alarm title", "test alarm message", NotificationChannelType.Default, date);
-        
+
     }
 }

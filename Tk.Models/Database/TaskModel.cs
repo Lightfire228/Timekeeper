@@ -17,7 +17,7 @@ public enum TaskPriority {
     Low,
     Medium,
     High,
-    FUCK
+    FUCKEN_HIGH
 }
 
 

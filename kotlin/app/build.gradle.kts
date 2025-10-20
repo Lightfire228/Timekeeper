@@ -41,6 +41,7 @@ dependencies {
     implementation(                    libs.androidx.compose.ui.graphics)
     implementation(                    libs.androidx.compose.ui.tooling.preview)
     implementation(                    libs.androidx.compose.material3)
+
     testImplementation(                libs.junit)
     androidTestImplementation(         libs.androidx.junit)
     androidTestImplementation(         libs.androidx.espresso.core)
@@ -49,10 +50,6 @@ dependencies {
     debugImplementation(               libs.androidx.compose.ui.tooling)
     debugImplementation(               libs.androidx.compose.ui.test.manifest)
     
-    // implementation("androidx.activity:activity-ktx")
-    // implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
-    // implementation("org.jetbrains.kotlin:kotlin-gradle-plugin")
-
 
     val nav_version = "2.9.5"
 
@@ -75,5 +72,6 @@ dependencies {
 
     implementation("androidx.compose.material:material-icons-core:1.7.8")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+    implementation("androidx.compose.material:material:1.9.3")
 
 }

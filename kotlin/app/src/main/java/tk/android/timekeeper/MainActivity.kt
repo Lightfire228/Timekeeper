@@ -17,6 +17,7 @@ import tk.android.timekeeper.ui.theme.TimekeeperTheme
 import tk.android.timekeeper.NavbarPages
 import tk.android.timekeeper.pages.TaskList
 import tk.android.timekeeper.pages.TestPage
+import tk.android.timekeeper.pages.NewTask
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.Image
@@ -121,16 +122,27 @@ fun Navbar(data: KDataService) {
                     name       = "Task List",
                     targetPage = NavbarPages.TaskList,
                 )
-                    DrawerItem(
+                DrawerItem(
                     icon       = Icons.Outlined.Science,
                     name       = "Test Page",
                     targetPage = NavbarPages.TestPage,
+                )
+                // TODO: move this to floating action button
+                DrawerItem(
+                    icon       = Icons.Filled.Add,
+                    name       = "New Task",
+                    targetPage = NavbarPages.NewTask,
                 )
             }
         }
     ) {
         Scaffold(
-            topBar = { TopBar(scope, drawerState) }
+            topBar               = { TopBar(scope, drawerState) }
+            // floatingActionButton = {
+            //     FloatingActionButton(onClick) {
+
+            //     }
+            // }
         ) { contentPadding ->
             Surface(modifier = Modifier.padding(contentPadding)) {
                 Body(currentPage, data)
@@ -142,6 +154,7 @@ fun Navbar(data: KDataService) {
 enum class NavbarPages {
     TaskList,
     TestPage,
+    NewTask,
 }
 
 @Composable
@@ -171,5 +184,6 @@ fun Body(currentPage: NavbarPages, data: KDataService) {
     when (currentPage) {
         NavbarPages.TaskList -> TaskList(data)
         NavbarPages.TestPage -> TestPage(data)
+        NavbarPages.NewTask  -> NewTask (data)
     }
 }
