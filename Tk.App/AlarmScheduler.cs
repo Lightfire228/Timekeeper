@@ -31,10 +31,6 @@ public class AlarmScheduler(Context context, ILogger logger)
         }
 
         long millis = (item.ScheduledTime.Ticks - DateTime.UnixEpoch.Ticks) / TimeSpan.TicksPerMillisecond;
-        long test   = Java.Lang.JavaSystem.CurrentTimeMillis();
-
-        _Logger.LogInformation("millis: {millis}, scheduled: {time}, javatime: {tim}", millis, item.ScheduledTime, test);
-
 
         _AlarmManager.SetExactAndAllowWhileIdle(
             AlarmType.RtcWakeup,

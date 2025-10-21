@@ -133,6 +133,14 @@ static class Extensions {
         DateTime.UnixEpoch.AddSeconds(unix)
     ;
 
+    public static long ToUnixTimestamp(this DateTime date) =>
+        (date.Ticks - DateTime.UnixEpoch.Ticks) / TimeSpan.TicksPerSecond
+    ;
+
+    public static Java.Lang.Long ToJavaLong(this long val) =>
+        Java.Lang.Long.ValueOf(val)
+    ;
+
     public static DateTime TrimToSeconds(this DateTime date) =>
         new (
             date.Ticks - (date.Ticks % TimeSpan.TicksPerSecond),
@@ -161,8 +169,7 @@ public class DataService(TkDbContext db, Logger logger, INotificationService not
                 x.Name,
                 x.Description,
                 x.Priority .ToInt(),
-                x.Due     ?.ToString(),
-                x.CreatedAt.ToString()
+                x.Due     ?.ToUnixTimestamp().ToJavaLong()
             ))
         ]
     ;}
@@ -191,5 +198,17 @@ public class DataService(TkDbContext db, Logger logger, INotificationService not
         Logger.LogInformation("Seconds from now: {diff} -- date: {date} -- now {now}", (date - now)?.TotalSeconds, date, now);
         NotifService.SendNotification("Test alarm title", "test alarm message", NotificationChannelType.Default, date);
 
+    }
+
+    public override void OnNewTask(KTaskModel newTask) {
+        Logger.LogInformation("On new task, name: {name}, desc: {desc}", newTask.Name, newTask.Description);
+        
+        Db.Tasks.Add(new() {
+            Name        = newTask.Name,
+            Description = newTask.Description,
+            Priority    = (TaskPriority) newTask.Priority,
+            Due         = newTask.Due?.LongValue().FromUnixTimestamp(),
+        });
+        Db.SaveChanges();
     }
 }

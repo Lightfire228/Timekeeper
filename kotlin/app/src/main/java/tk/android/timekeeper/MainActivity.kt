@@ -72,6 +72,7 @@ public abstract class KDataService {
 
 
     abstract fun onNotificationButton(unixTimestamp: Long?);
+    abstract fun onNewTask(newTask: KTaskModel);
 
 }
 
@@ -80,8 +81,7 @@ public open class KTaskModel(
     val name:        String,
     val description: String,
     val priority:    Int,
-    val due:         String?,
-    val createdAt:   String,
+    val due:         Long?,
 )
 
 
