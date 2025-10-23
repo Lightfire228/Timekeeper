@@ -95,31 +95,8 @@ def build_kotlin():
 
 
 def cat_log():
+    run([ADB, 'logcat', 'Tk.App.TimeKeeper:D *:S'])
 
-    print('>> 1 -            log.log (default)')
-    print('>> 2 -        startup.log')
-    print('>> 3 -         notifs.log')
-    print('>> 4 - notif_receiver.log')
-
-    usr_in = input('>>> ')
-
-    usr_in = usr_in.strip() or '1'
-
-    match usr_in:
-        case '1': file =            'log.log'
-        case '2': file =        'startup.log'
-        case '3': file =         'notifs.log'
-        case '4': file = 'notif_receiver.log'
-
-    p = run([
-        ADB, 'shell',
-        f'su -c "cat /data/data/Tk.App.Develop/files/{file}"'
-    ], capture_out=True)
-
-    if bail_on_err(p):
-        return
-
-    run([MOST, '+100000'], input=p.stdout)
 
 def build_problems():
 

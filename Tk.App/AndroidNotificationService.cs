@@ -12,9 +12,6 @@ namespace Tk.App;
 using ILogger = ILogger;
 
 
-// TODO: 
-#pragma warning disable CA1416 // Validate platform compatibility
-
 public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
     : INotificationService
 {
@@ -24,7 +21,9 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
 
     readonly AndroidNotificationServiceOpts Opts = opts;
 
-    readonly AlarmScheduler                 AlarmScheduler = new(opts.AppContext, opts.Logger);
+    readonly AlarmScheduler                 AlarmScheduler = new(opts.AppContext);
+
+    readonly ILogger Logger = MainApplication.BuildLogger();
 
 
     static readonly bool ImmutableSupported = Build.VERSION.SdkInt >= BuildVersionCodes.S;
@@ -42,7 +41,7 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
         
 
     public void SendNotification(string title, string message, NotificationChannelType channel, DateTime? notifyTime = null) {
-        Opts.Logger.LogInformation("send notif");
+        Logger.LogInformation("send notif");
 
         CreateNotificationChannel(channel);
 
@@ -51,7 +50,7 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
             return;
         }
 
-        Opts.Logger.LogInformation("schedule notif");
+        Logger.LogInformation("schedule notif");
 
         AlarmScheduler.Schedule(new () {
             ScheduledTime = notifyTime ?? throw new Exception("y tho"),
@@ -59,43 +58,11 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
             Message       = message,
             Title         = title,
         });
-
-
-
-        // var pendingIntent = GetPendingIntent(
-        //     title,
-        //     message,
-        //     resources,
-        //     CancelImmutable,
-        //     CancelOnly,
-        //     PendingIntent.GetBroadcast
-        // );
-
-        // long          triggerTime   = GetNotifyTime(notifyTime.Value);
-        // AlarmManager  alarmManager  = (AppContext.GetSystemService(Context.AlarmService) as AlarmManager)
-        //     ?? throw Panic("Unable to get alarm manager")
-        // ;
-
-
-        // alarmManager.Set(AlarmType.RtcWakeup, triggerTime, pendingIntent);
-
-        // Logger.LogInformation("finished");
     }
-
-    // public void ReceiveNotification(string title, string message) {
-
-    //     var args = new NotificationEventArgs{
-    //         Title   = title,
-    //         Message = message,
-    //     };
-
-    //     NotificationReceived?.Invoke(null, args);
-    // }
-
 
     public void Show(string title, string message, NotificationChannelType channel) {
 
-        Opts.Logger.LogInformation("show notif");
+        Logger.LogInformation("show notif");
 
         var pendingIntent = GetPendingIntent(
             title, 
@@ -142,14 +109,6 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
         Opts.NotifManager.CreateNotificationChannel(channel);
     }
 
-    // private long GetNotifyTime(DateTime notifyTime) {
-
-    //     DateTime utcTime      = TimeZoneInfo.ConvertTimeToUtc(notifyTime);
-    //     double   epochDiff    = (new DateTime(1970, 1, 1) - DateTime.MinValue).TotalSeconds;
-    //     long     utcAlarmTime = utcTime.AddSeconds(-epochDiff).Ticks / 10000;
-
-    //     return utcAlarmTime; // milliseconds
-    // }
 
     private Exception Panic(string message) =>
         new(message)
@@ -179,19 +138,6 @@ public class AndroidNotificationService(AndroidNotificationServiceOpts opts)
         ;
 
     }
-
-    // static ILogger GetLogger() {
-    //     var serilog = new LoggerConfiguration()
-    //         .WriteTo.Console()
-    //         .WriteTo.File(Path.Join(FileSystem.AppDataDirectory, "notification_manager.log"))
-    //         .CreateLogger()
-    //     ;
-
-    //     return new LoggerFactory()
-    //         .AddSerilog(serilog)
-    //         .CreateLogger<AndroidNotificationService>()
-    //     ;
-    // }
 }
 
 
@@ -207,7 +153,6 @@ public class AndroidNotificationServiceOpts {
     public required NotificationManager       NotifManager  { get; set; }
     public required Type                      MainActivity  { get; set; }
     public required Context                   AppContext    { get; set; }
-    public required ILogger                   Logger        { get; set; }
 
     public required int                       SmallIcon     { get; set; }
     public required int                       LargeIcon     { get; set; }

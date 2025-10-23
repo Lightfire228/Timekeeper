@@ -3,7 +3,6 @@ using Android.OS;
 using Android.Runtime;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using Tk.Database;
 using Tk.Database.Migrations;
 using Tk.Models;
@@ -12,8 +11,6 @@ using AndroidX.Core.App;
 using Tk.Android.Timekeeper;
 
 namespace Tk.App;
-
-using Logger = ILogger<MainActivity>;
 
 
 [Activity(MainLauncher = true)]
@@ -24,25 +21,16 @@ public class MainActivity
     private DataService                _ds                  = null!;
     private AndroidNotificationService _notificationService = null!;
 
-    public const string AndroidDataPath = "/data/data/Tk.App.Develop/files";
+    private readonly ILogger Logger = MainApplication.BuildLogger();
 
     public override KDataService DataService { get => _ds; }
 
     private TkDbContext Db { get; set; } = new(
         new DbContextOptionsBuilder<TkDbContext>() {}
-        .UseSqlite($"Data Source={AndroidDataPath}/timekeeper.db")
+        .UseSqlite($"Data Source={MainApplication.AndroidDataPath}/timekeeper.db")
         .Options
     );
 
-
-
-
-    static MainActivity() {
-
-        AppDomain.CurrentDomain.UnhandledException += (sender, e) => {
-            Logger.LogError("Uncaught error on Main Activity: {e}", e.ExceptionObject);
-        };
-    }
 
     protected override void OnCreate(Bundle? savedInstanceState) {
         Logger.LogInformation("On Create");
@@ -58,48 +46,11 @@ public class MainActivity
             NotifManager  = (NotificationManager)ApplicationContext!.GetSystemService(NotificationService)!,
             MainActivity  = typeof(MainActivity),
             AppContext    = ApplicationContext,
-            Logger        = BuildNotifLogger(),
             SmallIcon     = Resource.Drawable.appicon,
             LargeIcon     = Resource.Drawable.appicon,
         });
 
-        _ds = new(Db, Logger, _notificationService!);
-    }
-
-    static readonly Logger Logger = BuildLogger();
-
-    static Logger BuildLogger() {
-        var serilog = new LoggerConfiguration()
-            .WriteTo.Console()
-            .WriteTo.File($"{AndroidDataPath}/startup.log")
-            .CreateLogger()
-        ;
-
-        var logger = new LoggerFactory()
-            .AddSerilog(serilog)
-            .CreateLogger<MainActivity>()
-        ;
-
-        logger.LogInformation("init");
-
-        return logger;
-    }
-
-    static Microsoft.Extensions.Logging.ILogger BuildNotifLogger() {
-        var serilog = new LoggerConfiguration()
-            .WriteTo.Console()
-            .WriteTo.File($"{AndroidDataPath}/notifs.log")
-            .CreateLogger()
-        ;
-
-        var logger = new LoggerFactory()
-            .AddSerilog(serilog)
-            .CreateLogger<AndroidNotificationService>()
-        ;
-
-        logger.LogInformation("init");
-
-        return logger;
+        _ds = new(Db, _notificationService!);
     }
 
     private async Task InitDb() {
@@ -150,12 +101,12 @@ static class Extensions {
 
 }
 
-public class DataService(TkDbContext db, Logger logger, INotificationService notificationService)
+public class DataService(TkDbContext db, INotificationService notificationService)
     : KDataService
 {
 
     private readonly TkDbContext          Db           = db;
-    private readonly Logger               Logger       = logger;
+    private readonly ILogger              Logger       = MainApplication.BuildLogger();
     private readonly INotificationService NotifService = notificationService;
 
 

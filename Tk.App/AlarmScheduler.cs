@@ -11,12 +11,12 @@ public interface IAlarmScheduler {
 }
 
 
-public class AlarmScheduler(Context context, ILogger logger)
+public class AlarmScheduler(Context context)
         : IAlarmScheduler
 {
     private readonly Context      _Context      = context;
     private readonly AlarmManager _AlarmManager = (AlarmManager)context.GetSystemService(Context.AlarmService)!;
-    private readonly ILogger      _Logger       = logger;
+    private readonly ILogger      _Logger       = MainApplication.BuildLogger();
 
 
 

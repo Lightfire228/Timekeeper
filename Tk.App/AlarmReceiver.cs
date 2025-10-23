@@ -1,7 +1,6 @@
 using Android.Content;
 using AndroidX.Core.App;
 using Microsoft.Extensions.Logging;
-using Serilog;
 
 namespace Tk.App;
 
@@ -14,7 +13,7 @@ public class AlarmRecevier
     public const string EXTRA_TITLE   = "EXTRA_TITLE";
     public const string EXTRA_MESSAGE = "EXTRA_MESSAGE";
 
-    private static readonly Microsoft.Extensions.Logging.ILogger Logger = BuildNotifLogger();
+    private static readonly ILogger Logger = MainApplication.BuildLogger();
 
     public override void OnReceive(Context? context, Intent? intent) {
         try {
@@ -60,7 +59,6 @@ public class AlarmRecevier
             NotifManager  = notifManager,
             MainActivity  = typeof(MainActivity),
             AppContext    = context,
-            Logger        = Logger,
             SmallIcon     = Resource.Drawable.appicon,
             LargeIcon     = Resource.Drawable.appicon,
         });
@@ -69,20 +67,4 @@ public class AlarmRecevier
         service.Show(title, message, NotificationChannelType.Default);
     }
 
-    static Microsoft.Extensions.Logging.ILogger BuildNotifLogger() {
-        var serilog = new LoggerConfiguration()
-            .WriteTo.Console()
-            .WriteTo.File($"{MainActivity.AndroidDataPath}/notif_receiver.log")
-            .CreateLogger()
-        ;
-
-        var logger = new LoggerFactory()
-            .AddSerilog(serilog)
-            .CreateLogger<AndroidNotificationService>()
-        ;
-
-        logger.LogInformation("init");
-
-        return logger;
-    }
 } 

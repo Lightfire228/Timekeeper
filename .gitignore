@@ -1,3 +1,5 @@
+/dotnet
+
 **/*.env
 
 *.nu

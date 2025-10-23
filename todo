@@ -1,4 +1,7 @@
-- [ ] new task page
+- [x] new task page
 
+- [ ] unit tests
 - [ ] desktop app
-- [ ] fix the log situation
+- [x] fix the log situation
+- [ ] widget
+  - [ ] https://developer.android.com/develop/ui/compose/glance
