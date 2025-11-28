@@ -4,10 +4,10 @@
   let name = $state("");
   let greetMsg = $state("");
 
-  async function greet(event: Event) {
+  async function test_db(event: Event) {
     event.preventDefault();
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("greet", { name });
+    greetMsg = await invoke("test_db", { });
   }
 </script>
 
@@ -27,9 +27,9 @@
   </div>
   <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
 
-  <form class="row" onsubmit={greet}>
-    <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-    <button type="submit">Greet</button>
+  <form class="row" onsubmit={test_db}>
+    <!-- <input id="greet-input" placeholder="Enter a name..." bind:value={name} /> -->
+    <button type="submit">Test Db</button>
   </form>
   <p>{greetMsg}</p>
 </main>
