@@ -1,4 +1,4 @@
-/src/main/java/tk/TimeKeeper/generated
+/src/main/java/tk/timekeeper/generated
 /src/main/jniLibs/**/*.so
 /src/main/assets/tauri.conf.json
 /tauri.build.gradle.kts

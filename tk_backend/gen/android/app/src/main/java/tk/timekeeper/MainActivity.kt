@@ -1,4 +1,4 @@
-package tk.TimeKeeper
+package tk.timekeeper
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge

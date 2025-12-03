@@ -1,73 +1,74 @@
-use rusqlite::Connection;
+use diesel::{Connection, associations::HasTable, prelude::*};
+use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
+
+pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
+
 use std::{env, path::PathBuf};
 
-
-#[derive(Debug)]
-pub struct Task {
-    pub id:          usize,
-    pub name:        String,
-    pub description: String,
-}
-
-#[derive(Debug)]
-pub struct Tag {
-    pub id:   usize,
-    pub name: String,
-}
-
-
-#[derive(Debug)]
-pub struct TaskTags {
-    pub task_id: usize,
-    pub tag_id:  usize,
-}
+use crate::models::{NewTask, Task};
 
 
 pub fn test_db() {
 
-    // TODO
-    let mut file = PathBuf::from(env::current_dir().unwrap());
+    use crate::schema::db_tasks::dsl::*;
+
+    let mut file = app_data_path();
 
     file.push("timekeeper.db");
 
+    let mut conn = SqliteConnection::establish(file.to_str().unwrap()).unwrap();
 
-    let conn = Connection::open(file).unwrap();
+    conn.run_pending_migrations(MIGRATIONS).unwrap();
 
-    create_table_if_exists(&conn,
-        "Task",
-        "CREATE TABLE Task (
-            id          INTEGER PRIMARY KEY,
-            name        TEXT NOT NULL,
-            description TEXT NOT NULL
-        );"
-    );
+    let new_task = NewTask {
+        name:        "test",
+        description: "test desc"
+    };
 
-    create_table_if_exists(&conn,
-        "Tag",
-        "CREATE TABLE Tag (
-            id          INTEGER PRIMARY KEY,
-            name        TEXT NOT NULL
-        );"
-    );
+    diesel::insert_into(db_tasks::table())
+        .values (&new_task)
+        .execute(&mut conn)
+        .expect ("unable to insert task")
+    ;
 
-    create_table_if_exists(&conn,
-        "TaskTags",
-        "CREATE TABLE TaskTags (
-            task_id INTEGER,
-            tag_id  INTEGER,
-            PRIMARY KEY (task_id, tag_id),
-            FOREIGN KEY (task_id) REFERENCES Task(id),
-            FOREIGN KEY (tag_id)  REFERENCES Tag (id)
-        );"
-    );
+    let results = db_tasks
+        .select(Task::as_select())
+        .load  (&mut conn)
+        .expect("unable to load tasks")
+    ;
+
+    for task in results {
+        dbg!("{}", task);
+    }
+
 
 }
 
-fn create_table_if_exists(conn: &Connection, table: &str, sql: &str) {
-    if conn.table_exists(None, table).unwrap() {
-        return;
+
+fn app_data_path() -> PathBuf {
+    if cfg!(target_os = "android") {
+        app_data_path_android()
     }
+    else {
+        app_data_path_linux()
+    }
+}
 
-    conn.execute(sql, ()).unwrap();
+fn app_data_path_android() -> PathBuf {
+    // TODO:
+    PathBuf::from("/data/data/tk.timekeeper/files/")
+}
 
+
+fn app_data_path_linux() -> PathBuf {
+    let config_dir = env::var("XDG_CONFIG").unwrap_or_else(|_|
+        format!("{}/.config/", env::var("HOME").expect("unable to get config dir"))
+    );
+
+    let mut config_dir = PathBuf::from(config_dir);
+    config_dir.push("timekeeper/");                 // TODO: create folder if missing
+
+    dbg!("{}", &config_dir);
+
+    config_dir
 }
