@@ -36,7 +36,7 @@
   <div class="row" onsubmit={test_db}>
     <a href="/tasks">Tasks page</a>
   </div>c
-  
+
 </main>
 
 <style>

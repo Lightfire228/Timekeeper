@@ -1,12 +1,30 @@
+use std::sync::Mutex;
+
+use diesel::SqliteConnection;
+use serde::{Deserialize, Serialize};
+use tauri::{Manager, State};
+
 mod database;
 pub mod schema;
 pub mod models;
 
+pub struct AppStateInner {
+    pub conn: SqliteConnection,
+}
+
+pub type AppState = Mutex<AppStateInner>;
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .setup(|app| {
+            app.manage(Mutex::new(AppStateInner {
+                conn: database::get_db_connection(),
+            }));
+            Ok(())
+        })
         .plugin        (tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, test_db])
+        .invoke_handler(tauri::generate_handler![greet, test_db, new_task, print_db])
         .run           (tauri::generate_context!())
         .expect        ("error while running tauri application")
     ;
@@ -22,7 +40,26 @@ fn greet(name: &str) -> String {
 }
 
 #[tauri::command]
-#[allow(unused)]
 fn test_db() {
     database::test_db();
+}
+
+#[tauri::command]
+fn new_task(task: NewTaskInput, state: State<'_, AppState>) {
+    let mut state = state.lock().unwrap();
+
+    database::new_task(task, &mut state.conn);
+}
+
+#[tauri::command]
+fn print_db(state: State<'_, AppState>) {
+    let mut state = state.lock().unwrap();
+
+    database::print_tasks(&mut state.conn);
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct NewTaskInput {
+    pub name:        String,
+    pub description: String,
 }

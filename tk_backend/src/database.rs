@@ -5,18 +5,24 @@ pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
 use std::{env, path::PathBuf};
 
-use crate::models::{NewTask, Task};
+use crate::{NewTaskInput, models::{NewTask, Task}};
 
+type Conn = SqliteConnection;
 
-pub fn test_db() {
+use crate::schema::db_tasks::dsl::*;
 
-    use crate::schema::db_tasks::dsl::*;
-
+pub fn get_db_connection() -> Conn {
     let mut file = app_data_path();
 
     file.push("timekeeper.db");
 
-    let mut conn = SqliteConnection::establish(file.to_str().unwrap()).unwrap();
+    Conn::establish(file.to_str().unwrap()).unwrap()
+
+}
+
+pub fn test_db() {
+
+    let mut conn = get_db_connection();
 
     conn.run_pending_migrations(MIGRATIONS).unwrap();
 
@@ -40,10 +46,35 @@ pub fn test_db() {
     for task in results {
         dbg!("{}", task);
     }
-
-
 }
 
+pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
+    let new_task = NewTask {
+        name:        &task.name,
+        description: &task.description,
+    };
+
+
+    diesel::insert_into(db_tasks::table())
+        .values (&new_task)
+        .execute(conn)
+        .expect ("unable to insert task")
+    ;
+}
+
+
+pub fn print_tasks(conn: &mut Conn) {
+
+    let results = db_tasks
+        .select(Task::as_select())
+        .load  (conn)
+        .expect("unable to load tasks")
+    ;
+
+    for task in results {
+        dbg!("{}", task);
+    }
+}
 
 fn app_data_path() -> PathBuf {
     if cfg!(target_os = "android") {
