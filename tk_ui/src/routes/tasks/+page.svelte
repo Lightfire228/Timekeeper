@@ -27,16 +27,23 @@
 </script>
 
 <main class="container">
-  <h1>Tasks</h1>
+  <h1>New Task</h1>
 
+  <div class="row">
     <form class="row" onsubmit={newTask}>
-    <input id="task-name" placeholder="Enter a name..."        bind:value={task.name} />
-    <input id="task-desc" placeholder="Enter a description..." bind:value={task.description} />
-    <button type="submit">Save task</button>
-  </form>
+        <input id="task-name" placeholder="Enter a name..."        bind:value={task.name} />
+        <input id="task-desc" placeholder="Enter a description..." bind:value={task.description} />
+        <button type="submit">Save task</button>
+    </form>
+  </div>
 
-  <div>
+
+  <div class="row">
     <button onclick={printDb}>Print db</button>
+  </div>
+
+  <div class="row">
+    <a href="/tasks/list">Tasks List</a>
   </div>
 
 </main>

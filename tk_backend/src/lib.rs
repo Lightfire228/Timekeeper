@@ -4,6 +4,8 @@ use diesel::SqliteConnection;
 use serde::{Deserialize, Serialize};
 use tauri::{Manager, State};
 
+use crate::models::Task;
+
 mod database;
 pub mod schema;
 pub mod models;
@@ -24,7 +26,7 @@ pub fn run() {
             Ok(())
         })
         .plugin        (tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, test_db, new_task, print_db])
+        .invoke_handler(tauri::generate_handler![greet, test_db, new_task, print_db, get_tasks])
         .run           (tauri::generate_context!())
         .expect        ("error while running tauri application")
     ;
@@ -58,8 +60,31 @@ fn print_db(state: State<'_, AppState>) {
     database::print_tasks(&mut state.conn);
 }
 
+#[tauri::command]
+fn get_tasks(state: State<'_, AppState>) -> Vec<TaskOutput> {
+    let mut state = state.lock().unwrap();
+
+    database::get_all_tasks(&mut state.conn)
+        .unwrap()
+        .into_iter()
+        .map(|t| TaskOutput {
+            id:          t.id as f64,
+            name:        t.name,
+            description: t.description,
+        })
+        .collect()
+
+}
+
 #[derive(Deserialize, Serialize)]
 pub struct NewTaskInput {
+    pub name:        String,
+    pub description: String,
+}
+
+#[derive(Deserialize, Serialize)]
+pub struct TaskOutput {
+    pub id:          f64,
     pub name:        String,
     pub description: String,
 }

@@ -65,15 +65,18 @@ pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
 
 pub fn print_tasks(conn: &mut Conn) {
 
-    let results = db_tasks
-        .select(Task::as_select())
-        .load  (conn)
-        .expect("unable to load tasks")
-    ;
+    let results = get_all_tasks(conn).expect("unable to load tasks");
 
     for task in results {
         dbg!("{}", task);
     }
+}
+
+pub fn get_all_tasks(conn: &mut Conn) -> QueryResult<Vec<Task>> {
+
+     db_tasks
+        .select(Task::as_select())
+        .load  (conn)
 }
 
 fn app_data_path() -> PathBuf {

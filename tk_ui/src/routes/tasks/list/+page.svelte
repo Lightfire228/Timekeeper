@@ -1,53 +1,50 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
 
-  let name = $state("");
-  let greetMsg = $state("");
+  let tasks: Array<Task> = $state([]);
 
-  async function test_db(event: Event) {
-    event.preventDefault();
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("test_db", { });
+  async function getTasks() {
+    tasks = await invoke("get_tasks", {}) as Array<Task>;
+  }
+
+  getTasks();
+
+  type Task = {
+    id:          number,
+    name:        string,
+    description: string,
   }
 </script>
 
 <main class="container">
-  <h1>Welcome to Tauri + Svelte</h1>
+    <h1>Tasks</h1>
 
-  <div class="row">
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
-    </a>
-  </div>
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <td>id         </td>
+                    <td>name       </td>
+                    <td>description</td>
+                </tr>
+            </thead>
 
-  <form class="row" onsubmit={test_db}>
-    <!-- <input id="greet-input" placeholder="Enter a name..." bind:value={name} /> -->
-    <button type="submit">Test Db</button>
-  </form>
-  <p>{greetMsg}</p>
+            {#each tasks as task}
+                <tbody>
+                    <tr>
+                        <td>{task.id         }</td>
+                        <td>{task.name       }</td>
+                        <td>{task.description}</td>
+                    </tr>
+                </tbody>
+            {/each}
+        </table>
+    </div>
 
-  <div class="row">
-    <a href="/tasks">Tasks page</a>
-  </div>c
 
 </main>
 
 <style>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.svelte-kit:hover {
-  filter: drop-shadow(0 0 2em #ff3e00);
-}
-
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -69,8 +66,8 @@
   padding-top: 10vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  justify-content: left;
+  text-align: left;
 }
 
 .logo {
