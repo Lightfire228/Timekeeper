@@ -4,9 +4,9 @@ use diesel::SqliteConnection;
 use serde::{Deserialize, Serialize};
 use tauri::{Manager, State};
 
-use crate::models::Task;
-
 mod database;
+mod platform;
+
 pub mod schema;
 pub mod models;
 
@@ -19,19 +19,30 @@ pub type AppState = Mutex<AppStateInner>;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+
         .setup(|app| {
+            platform::init_files();
+
+            let mut conn = database::get_db_connection();
+            
+            database::init_db(&mut conn);
+
             app.manage(Mutex::new(AppStateInner {
-                conn: database::get_db_connection(),
+                conn,
             }));
             Ok(())
         })
+
         .plugin        (tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, test_db, new_task, print_db, get_tasks])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            new_task,
+            print_db,
+            get_tasks,
+        ])
         .run           (tauri::generate_context!())
         .expect        ("error while running tauri application")
     ;
-
-    database::test_db();
 }
 
 
@@ -39,11 +50,6 @@ pub fn run() {
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[tauri::command]
-fn test_db() {
-    database::test_db();
 }
 
 #[tauri::command]

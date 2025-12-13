@@ -1,51 +1,48 @@
+use std::{fs, path};
+
 use diesel::{Connection, associations::HasTable, prelude::*};
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
-use std::{env, path::PathBuf};
-
-use crate::{NewTaskInput, models::{NewTask, Task}};
+use crate::{NewTaskInput, models::{NewTask, Task}, platform};
 
 type Conn = SqliteConnection;
 
 use crate::schema::db_tasks::dsl::*;
 
 pub fn get_db_connection() -> Conn {
-    let mut file = app_data_path();
+    let mut file = platform::get_app_data_dir();
 
     file.push("timekeeper.db");
 
-    Conn::establish(file.to_str().unwrap()).unwrap()
+    let file_name = file.to_str().unwrap();
 
+    Conn::establish(file_name).unwrap_or_else(|err| panic!("Unable to open db file: '{}': {}", file_name, err))
 }
 
-pub fn test_db() {
-
-    let mut conn = get_db_connection();
-
+pub fn init_db(conn: &mut Conn) {
     conn.run_pending_migrations(MIGRATIONS).unwrap();
 
-    let new_task = NewTask {
-        name:        "test",
-        description: "test desc"
-    };
-
-    diesel::insert_into(db_tasks::table())
-        .values (&new_task)
-        .execute(&mut conn)
-        .expect ("unable to insert task")
+    let count: i64 = db_tasks
+        .count()
+        .get_result(conn)
+        .expect("unable to count tasks")
     ;
 
-    let results = db_tasks
-        .select(Task::as_select())
-        .load  (&mut conn)
-        .expect("unable to load tasks")
-    ;
-
-    for task in results {
-        dbg!("{}", task);
+    if count < 1 {
+        diesel::insert_into(db_tasks::table())
+            .values (vec![
+                NewTask { name: "test task 1", description: "test desc", },
+                NewTask { name: "test task 2", description: "test desc", },
+                NewTask { name: "test task 3", description: "test desc", },
+                NewTask { name: "test task 4", description: "test desc", },
+            ])
+            .execute(conn)
+            .expect ("unable to insert test tasks")
+        ;
     }
+    
 }
 
 pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
@@ -77,32 +74,4 @@ pub fn get_all_tasks(conn: &mut Conn) -> QueryResult<Vec<Task>> {
      db_tasks
         .select(Task::as_select())
         .load  (conn)
-}
-
-fn app_data_path() -> PathBuf {
-    if cfg!(target_os = "android") {
-        app_data_path_android()
-    }
-    else {
-        app_data_path_linux()
-    }
-}
-
-fn app_data_path_android() -> PathBuf {
-    // TODO:
-    PathBuf::from("/data/data/tk.timekeeper/files/")
-}
-
-
-fn app_data_path_linux() -> PathBuf {
-    let config_dir = env::var("XDG_CONFIG").unwrap_or_else(|_|
-        format!("{}/.config/", env::var("HOME").expect("unable to get config dir"))
-    );
-
-    let mut config_dir = PathBuf::from(config_dir);
-    config_dir.push("timekeeper/");                 // TODO: create folder if missing
-
-    dbg!("{}", &config_dir);
-
-    config_dir
 }
