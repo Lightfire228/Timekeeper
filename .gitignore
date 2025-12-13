@@ -2,3 +2,9 @@
 
 *.db
 *.env
+
+keystore.properties
+
+target/
+
+.gradle/
