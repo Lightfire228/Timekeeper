@@ -9,10 +9,10 @@ export async function print_db() {
     await invoke("print_db", {});
 }
 
-export async function newTask(task: TaskInput) {
+export async function new_task(task: TaskInput) {
     await invoke("new_task", { task });
 }
 
-export async function getTasks(): Promise<Array<Task>> {
+export async function get_tasks(): Promise<Array<Task>> {
     return await invoke("get_tasks", {});
 }

@@ -42,7 +42,7 @@ pub fn init_db(conn: &mut Conn) {
             .expect ("unable to insert test tasks")
         ;
     }
-    
+
 }
 
 pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
