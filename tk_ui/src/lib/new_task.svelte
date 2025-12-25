@@ -2,6 +2,7 @@
     import * as api from "$lib/api";
 
     import { blank_task, type TaskInput } from "$lib/types/task";
+  import EditTask from "./edit_task.svelte";
 
     let task: TaskInput = $state(blank_task());
 
@@ -20,18 +21,9 @@
 
 </script>
 
-<label>
-    Task Name:
-    <input
-        bind:value={task.name}
-        autocomplete="off"
-    />
-</label>
-<label>
-    Task Description:
-    <input
-        bind:value={task.description}
-        autocomplete="off"
-    />
-</label>
-<button onclick={new_task}>new task</button>
+<EditTask 
+    {task}
+    button_text = "New Task"
+    on_save     = {new_task}
+/>
+
