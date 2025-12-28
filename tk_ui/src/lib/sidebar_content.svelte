@@ -1,6 +1,27 @@
 <script lang="ts">
+    import { resolve } from '$app/paths';
 
 </script>
 
-<div class="flex flex-col gap-2">
-</div>
+<ul>
+    <li>
+      <a href={resolve('/')}>
+          <div class="flex flex-col">
+              <div class="flex-1">
+                  tasks
+              </div>
+          </div>
+      </a>
+    </li>
+
+    <li>
+        <a href={resolve('/new_task')}>
+            <div class="flex flex-col">
+                <div class="flex-1">
+                    new task
+                </div>
+            </div>
+        </a>
+    </li>
+
+</ul>

@@ -4,8 +4,8 @@
     let { children } = $props();
 </script>
 
-<div class="flex gap-2">
-    <div class="dark:bg-amber-950 flex-1 h-screen">
+<div class="flex">
+    <div class="flex-1 h-screen">
         <SidebarContent/>
     </div>
 
