@@ -1,15 +1,18 @@
 <script lang="ts">
     import SidebarEntry from './sidebar_entry.svelte';
+    import * as icons from '$lib/icons';
 
 </script>
 
 <ul class="p-2">
     <SidebarEntry
-        display = "Tasks"
+        label   = "Tasks"
         path    = "/"
+        icon    = {icons.Check}
     />
     <SidebarEntry
-        display = "New Task"
+        label   = "New Task"
         path    = "/new_task"
+        icon    = {icons.Add}
     />
 </ul>
