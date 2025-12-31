@@ -22,7 +22,7 @@
 
 </script>
 
-{#snippet icon(type, style?: Style)}
+{#snippet icon(type: ClassValue, style?: Style)}
   <div>
     <span class={{type, style}}></span>
   </div>

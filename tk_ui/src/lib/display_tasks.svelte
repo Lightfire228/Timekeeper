@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
+    import { resolve } from "$app/paths";
   import { type Task } from "$lib/types/task";
 
   export type DisplayTasksProps = {
@@ -6,6 +8,8 @@
   };
 
   let { tasks }: DisplayTasksProps = $props();
+
+
 
 
 </script>
@@ -23,6 +27,7 @@
 
     <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
       <button
+        onclick={() => goto(resolve("/new_task"))}
         type="button"
         class="block rounded-md bg-slate-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-slate-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-500"
       >
