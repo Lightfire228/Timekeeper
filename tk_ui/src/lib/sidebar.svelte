@@ -1,16 +1,17 @@
 <script lang="ts">
     import { resolve } from "$app/paths";
+    import { Calendar, File, FolderOpen, Home, PieChart, Team } from "./icons.svelte";
 
     let { children } = $props();
 
 
   const navigation = [
-    { id: 1, name: 'Dashboard', href: '#', icon: '', current: true },
-    { id: 2, name: 'Team',      href: '#', icon: '', current: false },
-    { id: 3, name: 'Projects',  href: '#', icon: '', current: false },
-    { id: 4, name: 'Calendar',  href: '#', icon: '', current: false },
-    { id: 5, name: 'Documents', href: '#', icon: '', current: false },
-    { id: 6, name: 'Reports',   href: '#', icon: '', current: false },
+    { id: 1, name: 'Dashboard', href: '#', icon: Home,       current: true },
+    { id: 2, name: 'Team',      href: '#', icon: Team,       current: false },
+    { id: 3, name: 'Projects',  href: '#', icon: FolderOpen, current: false },
+    { id: 4, name: 'Calendar',  href: '#', icon: Calendar,   current: false },
+    { id: 5, name: 'Documents', href: '#', icon: File,       current: false },
+    { id: 6, name: 'Reports',   href: '#', icon: PieChart,   current: false },
   ]
   const teams = [
     { id: 1, name: 'Heroicons',     href: '#', initial: 'H', current: false },
@@ -31,6 +32,7 @@
   <div class="hidden bg-gray-900 lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
     <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-white/10 bg-black/10 px-6">
       <div class="flex h-16 shrink-0 items-center">
+        <!-- TODO: -->
         <img
           alt="Your Company"
           src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
@@ -45,9 +47,8 @@
                 <ul role="list" class="-mx-2 space-y-1">
                   {#each navigation as item (item.id)}
                     <li>
-                        <!-- href={resolve(item.href)} -->
                       <a
-                        href={resolve("/")}
+                        href={resolve("/" /* item.href */)}
                         class={clsx(
                           item.current
                             ? 'bg-white/5 text-white'
@@ -55,6 +56,10 @@
                           'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                         )}
                       >
+                        {@render item.icon([
+                          'aria-hidden size-6 shrink-0',
+                          item.current ? 'text-white' : 'text-gray-400 group-hover:text-white',
+                        ])}
                         <!-- <item.icon
                           aria-hidden="true"
                           class={clsx(
