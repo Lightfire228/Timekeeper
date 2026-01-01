@@ -23,6 +23,10 @@ export default defineConfig(
 			"no-undef": 'off',
 
 			"@typescript-eslint/no-unused-vars": "warn",
+
+      "svelte/no-unused-props": ["warn", {
+        ignorePropertyPatterns: ["id"]
+      }],
 		}
 	},
 	{
