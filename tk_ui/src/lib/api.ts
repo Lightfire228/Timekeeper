@@ -13,6 +13,10 @@ export async function new_task(task: TaskInput) {
     await invoke("new_task", { task });
 }
 
+export async function delete_task(taskId: number) {
+    await invoke("delete_task", { taskId });
+}
+
 export async function get_tasks(): Promise<Array<Task>> {
     return await invoke("get_tasks", {});
 }

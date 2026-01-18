@@ -24,7 +24,7 @@ pub fn run() {
             platform::init_files();
 
             let mut conn = database::get_db_connection();
-            
+
             database::init_db(&mut conn);
 
             app.manage(Mutex::new(AppStateInner {
@@ -37,6 +37,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             new_task,
+            delete_task,
             print_db,
             get_tasks,
         ])
@@ -57,6 +58,14 @@ fn new_task(task: NewTaskInput, state: State<'_, AppState>) {
     let mut state = state.lock().unwrap();
 
     database::new_task(task, &mut state.conn);
+}
+
+// TODO: soft delete
+#[tauri::command]
+fn delete_task(task_id: i64, state: State<'_, AppState>) {
+    let mut state = state.lock().unwrap();
+
+    database::delete_task(task_id, &mut state.conn);
 }
 
 #[tauri::command]

@@ -1,20 +1,25 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-    import { resolve } from "$app/paths";
+  import { goto } from "$app/navigation";
+  import { resolve } from "$app/paths";
   import { type Task } from "$lib/types/task";
+  import { Trash } from "./icons.svelte";
+
+  import * as api from '$lib/api';
 
   export type DisplayTasksProps = {
-    tasks: Task[],
+    tasks:    Task[],
+    onDelete: (task: Task) => Promise<void>,
   };
 
-  let { tasks }: DisplayTasksProps = $props();
-
-
+  let {
+    tasks,
+    onDelete,
+  }: DisplayTasksProps = $props();
 
 
 </script>
 
-
+<!-- TODO: move this into a "Data table" component of some kind -->
 <div class="px-4 sm:px-6 lg:px-8 pt-4">
 
   <div class="sm:flex sm:items-center">
@@ -62,6 +67,9 @@
               <th scope="col" class="py-3.5 pr-4 pl-3 sm:pr-6 lg:pr-8">
                 <span class="sr-only">Edit</span>
               </th>
+              <th scope="col" class="py-3.5 pr-4 pl-3 sm:pr-6 lg:pr-8">
+                <span class="sr-only">Delete</span>
+              </th>
             </tr>
           </thead>
 
@@ -80,6 +88,11 @@
                     Edit
                     <span class="sr-only">, {task.name}</span>
                   </a>
+                </td>
+                <td class="py-4 pr-4 pl-3 text-right text-sm font-medium whitespace-nowrap sm:pr-6 lg:pr-8">
+                  <button onclick={() => onDelete(task)}>
+                    {@render Trash()}
+                  </button>
                 </td>
               </tr>
 

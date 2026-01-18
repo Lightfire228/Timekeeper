@@ -5,12 +5,20 @@
 
     let tasks: Task[] = $state([])
 
-    const refresh_tasks = async () => {
+    const refreshTasks = async () => {
       tasks = await api.get_tasks();
     }
 
-    refresh_tasks();
+    const onDelete = async (task: Task) => {
+      // TODO: confirmation dialog
+
+      await api.delete_task(task.id);
+
+      await refreshTasks();
+    }
+
+    refreshTasks();
 </script>
 
 
-<DisplayTasks {tasks}/>
+<DisplayTasks {tasks} {onDelete} />

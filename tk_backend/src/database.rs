@@ -1,6 +1,7 @@
+use core::task;
 use std::{fs, path};
 
-use diesel::{Connection, associations::HasTable, prelude::*};
+use diesel::{Connection, associations::HasTable, prelude::*, query_builder::AsQuery};
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
@@ -56,6 +57,14 @@ pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
         .values (&new_task)
         .execute(conn)
         .expect ("unable to insert task")
+    ;
+}
+
+pub fn delete_task(task_id: i64, conn: &mut Conn) {
+
+    diesel::delete(db_tasks.filter(id.eq(task_id)))
+        .execute(conn)
+        .expect ("unable to delete task")
     ;
 }
 
