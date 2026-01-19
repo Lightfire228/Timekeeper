@@ -1,3 +1,5 @@
+mod backup;
+
 use core::task;
 use std::{fs, path};
 
@@ -11,6 +13,8 @@ use crate::{NewTaskInput, models::{NewTask, Task}, platform};
 type Conn = SqliteConnection;
 
 use crate::schema::db_tasks::dsl::*;
+
+pub use backup::*;
 
 pub fn get_db_connection() -> Conn {
     let mut file = platform::get_app_data_dir();
@@ -46,7 +50,7 @@ pub fn init_db(conn: &mut Conn) {
 
 }
 
-pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
+pub async fn new_task(task: NewTaskInput, conn: &mut Conn) {
     let new_task = NewTask {
         name:        &task.name,
         description: &task.description,
@@ -60,7 +64,7 @@ pub fn new_task(task: NewTaskInput, conn: &mut Conn) {
     ;
 }
 
-pub fn delete_task(task_id: i64, conn: &mut Conn) {
+pub async fn delete_task(task_id: i64, conn: &mut Conn) {
 
     diesel::delete(db_tasks.filter(id.eq(task_id)))
         .execute(conn)
@@ -69,16 +73,16 @@ pub fn delete_task(task_id: i64, conn: &mut Conn) {
 }
 
 
-pub fn print_tasks(conn: &mut Conn) {
+pub async fn print_tasks(conn: &mut Conn) {
 
-    let results = get_all_tasks(conn).expect("unable to load tasks");
+    let results = get_all_tasks(conn).await.expect("unable to load tasks");
 
     for task in results {
         dbg!("{}", task);
     }
 }
 
-pub fn get_all_tasks(conn: &mut Conn) -> QueryResult<Vec<Task>> {
+pub async fn get_all_tasks(conn: &mut Conn) -> QueryResult<Vec<Task>> {
 
      db_tasks
         .select(Task::as_select())

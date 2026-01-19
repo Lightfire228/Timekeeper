@@ -16,6 +16,7 @@
     Menu,
     Minus,
     PieChart,
+    Settings,
     Team,
     Trash,
   };
@@ -72,6 +73,10 @@
 
 {#snippet PieChart(style: Style = [])}
   {@render icon('icon-[material-symbols--pie-chart]',                      style)}
+{/snippet}
+
+{#snippet Settings(style: Style = [])}
+  {@render icon('icon-[material-symbols--settings]',                       style)}
 {/snippet}
 
 {#snippet Team(style: Style = [])}

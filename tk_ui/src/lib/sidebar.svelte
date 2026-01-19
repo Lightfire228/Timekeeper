@@ -1,7 +1,7 @@
 <script lang="ts">
   import { afterNavigate } from "$app/navigation";
   import { resolve } from "$app/paths";
-  import { Calendar, File, FolderOpen, Home, Menu, PieChart, Team } from "./icons.svelte";
+  import { Calendar, File, FolderOpen, Home, Menu, PieChart, Settings, Team } from "./icons.svelte";
   import SidebarEntry, { type NavEntry } from "./sidebar/sidebar_entry.svelte";
   import SidebarFooter from "./sidebar/sidebar_footer.svelte";
   import SidebarLogo from "./sidebar/sidebar_logo.svelte";
@@ -11,7 +11,7 @@
   const entries: Array<NavEntry> = $state([
     { id: 1, name: 'Tasks',     href: '/',         icon: Home,       current: true  },
     { id: 2, name: 'New Task',  href: '/new_task', icon: Team,       current: false },
-    { id: 3, name: 'Projects',  href: '/',         icon: FolderOpen, current: false },
+    { id: 3, name: 'Settings',  href: '/settings', icon: Settings,   current: false },
     { id: 4, name: 'Calendar',  href: '/',         icon: Calendar,   current: false },
     { id: 5, name: 'Documents', href: '/',         icon: File,       current: false },
     { id: 6, name: 'Reports',   href: '/',         icon: PieChart,   current: false },

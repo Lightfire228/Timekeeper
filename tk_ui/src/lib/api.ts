@@ -20,3 +20,7 @@ export async function delete_task(taskId: number) {
 export async function get_tasks(): Promise<Array<Task>> {
     return await invoke("get_tasks", {});
 }
+
+export async function backup_db() {
+    return await invoke("backup_db", {});
+}

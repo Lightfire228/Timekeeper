@@ -1,9 +1,10 @@
 
 use crate::schema::db_tasks;
 use diesel::prelude::*;
+use serde::Serialize;
 
 
-#[derive(Queryable, Selectable, Debug)]
+#[derive(Queryable, Selectable, Debug, Serialize)]
 #[diesel(table_name = crate::schema::db_tasks)]
 pub struct Task {
     pub id:          i64,
@@ -18,14 +19,14 @@ pub struct NewTask<'a> {
     pub description: &'a str,
 }
 
-#[derive(Queryable, Selectable, Debug)]
+#[derive(Queryable, Selectable, Debug, Serialize)]
 #[diesel(table_name = crate::schema::db_tags)]
 pub struct Tag {
     pub id:          i64,
     pub name:        String,
 }
 
-#[derive(Queryable, Selectable, Debug)]
+#[derive(Queryable, Selectable, Debug, Serialize)]
 #[diesel(table_name = crate::schema::db_task_tags)]
 pub struct TaskTag {
     pub task_id:          i64,

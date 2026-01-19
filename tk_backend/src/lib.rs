@@ -1,8 +1,8 @@
-use std::sync::Mutex;
-
 use diesel::SqliteConnection;
 use serde::{Deserialize, Serialize};
-use tauri::{Manager, State};
+use tauri::{App, Manager, State};
+
+use tokio::sync::Mutex;
 
 mod database;
 mod platform;
@@ -15,6 +15,8 @@ pub struct AppStateInner {
 }
 
 pub type AppState = Mutex<AppStateInner>;
+
+type Void = Result<(), ()>;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -40,6 +42,7 @@ pub fn run() {
             delete_task,
             print_db,
             get_tasks,
+            backup_db,
         ])
         .run           (tauri::generate_context!())
         .expect        ("error while running tauri application")
@@ -54,32 +57,39 @@ fn greet(name: &str) -> String {
 }
 
 #[tauri::command]
-fn new_task(task: NewTaskInput, state: State<'_, AppState>) {
-    let mut state = state.lock().unwrap();
+async fn new_task(task: NewTaskInput, state: State<'_, AppState>) -> Void {
+    let mut state = state.lock().await;
 
-    database::new_task(task, &mut state.conn);
+    database::new_task(task, &mut state.conn).await;
+
+    Ok(())
 }
 
 // TODO: soft delete
 #[tauri::command]
-fn delete_task(task_id: i64, state: State<'_, AppState>) {
-    let mut state = state.lock().unwrap();
+async fn delete_task(task_id: i64, state: State<'_, AppState>) -> Void {
+    let mut state = state.lock().await;
 
-    database::delete_task(task_id, &mut state.conn);
+    database::delete_task(task_id, &mut state.conn).await;
+
+    Ok(())
 }
 
 #[tauri::command]
-fn print_db(state: State<'_, AppState>) {
-    let mut state = state.lock().unwrap();
+async fn print_db(state: State<'_, AppState>) -> Void {
+    let mut state = state.lock().await;
 
-    database::print_tasks(&mut state.conn);
+    database::print_tasks(&mut state.conn).await;
+
+    Ok(())
 }
 
 #[tauri::command]
-fn get_tasks(state: State<'_, AppState>) -> Vec<TaskOutput> {
-    let mut state = state.lock().unwrap();
+async fn get_tasks(state: State<'_, AppState>) -> Result<Vec<TaskOutput>, ()> {
+    let mut state = state.lock().await;
 
-    database::get_all_tasks(&mut state.conn)
+    Ok(database::get_all_tasks(&mut state.conn)
+        .await
         .unwrap()
         .into_iter()
         .map(|t| TaskOutput {
@@ -88,7 +98,17 @@ fn get_tasks(state: State<'_, AppState>) -> Vec<TaskOutput> {
             description: t.description,
         })
         .collect()
+    )
 
+}
+
+#[tauri::command]
+async fn backup_db(state: State<'_, AppState>) -> Void {
+    let mut state = state.lock().await;
+
+    database::backup_db(&mut state.conn).await;
+
+    Ok(())
 }
 
 #[derive(Deserialize, Serialize)]
