@@ -4,8 +4,6 @@
   import { type Task } from "$lib/types/task";
   import { Trash } from "./icons.svelte";
 
-  import * as api from '$lib/api';
-
   export type DisplayTasksProps = {
     tasks:    Task[],
     onDelete: (task: Task) => Promise<void>,
@@ -106,47 +104,3 @@
   </div>
 
 </div>
-
-
-
-<!-- <div class="m-3">
-    <div class="grid grid-cols-100 gap-1">
-
-        <div class="col-span-2" >                  </div>
-        <div class="col-span-5" ><b>Id         </b></div>
-        <div class="col-span-25"><b>Name       </b></div>
-        <div class="col-span-68"><b>Description</b></div>
-
-        {#each tasks as task (task.id)}
-            <div class="col-span-2" >{@render Trash()} </div>
-            <div class="col-span-5" >{task.id}         </div>
-            <div class="col-span-25">{task.name}       </div>
-            <div class="col-span-68">{task.description}</div>
-        {/each}
-    </div>
-</div>
- -->
-
-<!-- <div class="table-auto">
-    <table>
-        <thead>
-            <tr>
-                <th>           </th>
-                <th>Id         </th>
-                <th>Name       </th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            {#each tasks as task (task.id)}
-                <tr>
-                    <td class="p-0.5">{@render Trash()}</td>
-                    <td class="p-0.5">{task.id}         </td>
-                    <td class="p-0.5">{task.name}       </td>
-                    <td class="p-0.5">{task.description}</td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
-</div>
- -->
