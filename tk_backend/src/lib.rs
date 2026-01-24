@@ -1,12 +1,15 @@
 use diesel::SqliteConnection;
 use serde::{Deserialize, Serialize};
-use tauri::{App, Manager, State};
+use tauri::{Manager, State};
 
 use tokio::sync::Mutex;
+
+use crate::models::TaskId;
 
 mod database;
 mod platform;
 
+pub mod config;
 pub mod schema;
 pub mod models;
 
@@ -20,6 +23,9 @@ type Void = Result<(), ()>;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+
+    // config::Config::get_config_path();
+
     tauri::Builder::default()
 
         .setup(|app| {
@@ -67,7 +73,7 @@ async fn new_task(task: NewTaskInput, state: State<'_, AppState>) -> Void {
 
 // TODO: soft delete
 #[tauri::command]
-async fn delete_task(task_id: i64, state: State<'_, AppState>) -> Void {
+async fn delete_task(task_id: TaskId, state: State<'_, AppState>) -> Void {
     let mut state = state.lock().await;
 
     database::delete_task(task_id, &mut state.conn).await;

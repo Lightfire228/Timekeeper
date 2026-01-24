@@ -1,14 +1,12 @@
 mod backup;
 
-use core::task;
-use std::{fs, path};
-
-use diesel::{Connection, associations::HasTable, prelude::*, query_builder::AsQuery};
+use chrono::{Local};
+use diesel::{Connection, associations::HasTable, prelude::*};
 use diesel_migrations::{EmbeddedMigrations, MigrationHarness, embed_migrations};
 
 pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
 
-use crate::{NewTaskInput, models::{NewTask, Task}, platform};
+use crate::{NewTaskInput, models::{NewTask, Task, TaskId}, platform};
 
 type Conn = SqliteConnection;
 
@@ -35,13 +33,15 @@ pub fn init_db(conn: &mut Conn) {
         .expect("unable to count tasks")
     ;
 
+    let now = Local::now().naive_local();
+
     if count < 1 {
         diesel::insert_into(db_tasks::table())
             .values (vec![
-                NewTask { name: "test task 1", description: "test desc", },
-                NewTask { name: "test task 2", description: "test desc", },
-                NewTask { name: "test task 3", description: "test desc", },
-                NewTask { name: "test task 4", description: "test desc", },
+                NewTask { name: "test task 1", description: "test desc", created_at: now },
+                NewTask { name: "test task 2", description: "test desc", created_at: now },
+                NewTask { name: "test task 3", description: "test desc", created_at: now },
+                NewTask { name: "test task 4", description: "test desc", created_at: now },
             ])
             .execute(conn)
             .expect ("unable to insert test tasks")
@@ -54,6 +54,7 @@ pub async fn new_task(task: NewTaskInput, conn: &mut Conn) {
     let new_task = NewTask {
         name:        &task.name,
         description: &task.description,
+        created_at:  Local::now().naive_local(),
     };
 
 
@@ -64,9 +65,14 @@ pub async fn new_task(task: NewTaskInput, conn: &mut Conn) {
     ;
 }
 
-pub async fn delete_task(task_id: i64, conn: &mut Conn) {
+pub async fn delete_task(task_id: TaskId, conn: &mut Conn) {
 
-    diesel::delete(db_tasks.filter(id.eq(task_id)))
+    let date = Local::now().naive_local();
+
+    diesel::update(db_tasks)
+        .filter (id        .eq(task_id))
+        .set    (deleted_at.eq(date))
+        // .set    (name.eq("test"))
         .execute(conn)
         .expect ("unable to delete task")
     ;
@@ -86,5 +92,6 @@ pub async fn get_all_tasks(conn: &mut Conn) -> QueryResult<Vec<Task>> {
 
      db_tasks
         .select(Task::as_select())
+        .filter(deleted_at.is_null())
         .load  (conn)
 }

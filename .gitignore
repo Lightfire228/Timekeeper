@@ -10,3 +10,6 @@ keystore.properties
 target/
 
 .gradle/
+
+
+conf.yaml
